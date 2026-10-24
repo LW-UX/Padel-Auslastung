@@ -168,13 +168,14 @@ def main():
         except Exception as e:  # ein kaputter Club soll die anderen nicht blockieren
             errors.append(f'{club["name"]}: {e}')
 
-    CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
-    new = not CSV_PATH.exists()
-    with CSV_PATH.open("a", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=FIELDS)
-        if new:
-            w.writeheader()
-        w.writerows(rows)
+    if rows:  # bei Fehlern keine leere CSV anlegen
+        CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
+        new = not CSV_PATH.exists()
+        with CSV_PATH.open("a", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=FIELDS)
+            if new:
+                w.writeheader()
+            w.writerows(rows)
 
     print(f"Auslastung {now:%a %d.%m.%Y %H:%M} (X = belegt, . = frei, je 30 min)")
     for r in rows:

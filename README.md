@@ -1,10 +1,10 @@
 # Playtomic-Auslastung
 
-Erfasst dreimal täglich (6, 10, 15 Uhr) die Platz-Auslastung von:
+Erfasst dreimal täglich (6, 10, 15 Uhr) die Platz-Auslastung dieser Clubs:
 
 - Serve One Padel Langweid
 - Serve One Padel Bergheim
-- BIMA Athletics Bobingen
+- BIMA Athletics Bobingen (noch nicht eröffnet, in `CLUBS` auskommentiert)
 
 Geprüft wird jeweils **heute** (nur die restlichen Stunden, da Playtomic Vergangenes nicht mehr anzeigt) und der Tag **in 4 Tagen**.
 

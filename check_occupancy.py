@@ -24,7 +24,8 @@ UA = {"User-Agent": "Mozilla/5.0 (occupancy-tracker)"}
 CLUBS = [
     {"slug": "serve-one-padel-langweid", "name": "Serve One Langweid"},
     {"slug": "serve-one-padel", "name": "Serve One Bergheim"},
-    {"slug": "bima-athletics", "name": "BIMA Bobingen"},
+    # Noch nicht eroeffnet, Zeile einkommentieren sobald online buchbar:
+    # {"slug": "bima-athletics", "name": "BIMA Bobingen"},
 ]
 
 # Tageszeit-Fenster (lokale Zeit, Stunden) fuer die Auswertung

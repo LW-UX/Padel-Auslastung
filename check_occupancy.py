@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
-"""Erfasst die Platz-Auslastung von Playtomic-Clubs und haengt sie an data/occupancy.csv an.
+"""Erfasst die Platz-Auslastung von Padel-Clubs und haengt sie an data/occupancy.csv an.
 
 Geprueft werden heute (nur die restlichen Stunden ab jetzt) und der Tag in DAYS_AHEAD Tagen.
-Ein 30-Minuten-Block gilt als frei, wenn ein buchbarer Slot ihn abdeckt, sonst als belegt.
+Playtomic liefert freie Slots: ein 30-Minuten-Block gilt als frei, wenn ein Slot ihn abdeckt.
+eBuSy liefert Buchungen: ein Block gilt als belegt, wenn eine Buchung/Sperre ihn abdeckt.
 Nur Standardbibliothek, damit es in jeder Umgebung ohne pip install laeuft.
 """
 import csv
 import json
 import re
 import sys
+import time
+import urllib.error
+import urllib.parse
 import urllib.request
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -22,10 +26,12 @@ CSV_PATH = Path(__file__).parent / "data" / "occupancy.csv"
 UA = {"User-Agent": "Mozilla/5.0 (occupancy-tracker)"}
 
 CLUBS = [
-    {"slug": "serve-one-padel-langweid", "name": "Serve One Langweid"},
-    {"slug": "serve-one-padel", "name": "Serve One Bergheim"},
+    {"source": "playtomic", "slug": "serve-one-padel-langweid", "name": "Serve One Langweid"},
+    {"source": "playtomic", "slug": "serve-one-padel", "name": "Serve One Bergheim"},
     # Noch nicht eroeffnet, Zeile einkommentieren sobald online buchbar:
-    # {"slug": "bima-athletics", "name": "BIMA Bobingen"},
+    # {"source": "playtomic", "slug": "bima-athletics", "name": "BIMA Bobingen"},
+    {"source": "ebusy", "url": "https://padel-djk-lechhausen.ebusy.de/lite-module/1", "name": "DJK Lechhausen"},
+    {"source": "ebusy", "url": "https://ebusy.padelstars.eu/court-module/2485", "name": "TSG Lechhausen"},
 ]
 
 # Tageszeit-Fenster (lokale Zeit, Stunden) fuer die Auswertung
@@ -40,10 +46,16 @@ FIELDS = [
 WEEKDAYS_DE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 
-def get(url):
-    req = urllib.request.Request(url, headers=UA)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read().decode("utf-8")
+def get(url, headers=None, attempts=3):
+    req = urllib.request.Request(url, headers={**UA, **(headers or {})})
+    for attempt in range(attempts):
+        try:
+            with urllib.request.urlopen(req, timeout=20) as r:
+                return r.read().decode("utf-8")
+        except (TimeoutError, urllib.error.URLError):
+            if attempt == attempts - 1:
+                raise
+            time.sleep(5)
 
 
 def extract_json(text, key, opener):
@@ -105,37 +117,73 @@ def pct(booked, total):
     return "" if total == 0 else round(100 * booked / total, 1)
 
 
+def playtomic_day(club, day, cache):
+    """(courts, blocks, status) fuer einen Tag; status[cid] = Liste aus "X"/"." je Block."""
+    if "info" not in cache:
+        cache["info"] = club_info(club["slug"])
+    tenant_id, courts, hours = cache["info"]
+    rng = open_range(hours, day)
+    if not rng:
+        return courts, [], {}, ""
+    midnight = datetime.combine(day, datetime.min.time(), tzinfo=TZ)
+    blocks = [midnight + timedelta(minutes=m) for m in range(rng[0], rng[1], BLOCK_MIN)]
+    free = free_intervals(tenant_id, day)
+    status = {cid: ["." if any(a <= b < e for a, e in free.get(cid, [])) else "X" for b in blocks]
+              for cid in courts}
+    note = "" if free else "keine freien Online-Slots (ausgebucht oder nicht online buchbar)"
+    return courts, blocks, status, note
+
+
+def ebusy_day(club, day, cache):
+    """Wie playtomic_day, aber aus der eBuSy-Tagesansicht (Raster) und deren Buchungs-JSON."""
+    us_date = day.strftime("%m/%d/%Y")
+    html = get(f'{club["url"]}?currentDate={us_date}')
+    courts = dict(re.findall(r'<th class="court[^"]*" data-id="(\d+)" title="([^"]+)"', html))
+    times = sorted(set(re.findall(rf'data-date="{re.escape(us_date)}"[^>]*data-minor-begin="(\d\d:\d\d)"', html)))
+    midnight = datetime.combine(day, datetime.min.time(), tzinfo=TZ)
+    blocks = [midnight + timedelta(hours=int(t[:2]), minutes=int(t[3:])) for t in times]
+    data = json.loads(get(
+        f'{club["url"]}?selectedDate={urllib.parse.quote(us_date, safe="")}&timestamp=',
+        {"Accept": "application/json", "X-Requested-With": "XMLHttpRequest"},
+    ))
+    booked = {}
+    for r in data.get("reservations", []):
+        if r.get("date") != us_date:
+            continue
+        to_dt = lambda s: midnight + timedelta(hours=int(s[:2]), minutes=int(s[3:5]))
+        end = to_dt(r["toTime"]) if r["toTime"] != "00:00" else midnight + timedelta(days=1)
+        booked.setdefault(str(r["court"]), []).append((to_dt(r["fromTime"]), end))
+    status = {cid: ["X" if any(a <= b < e for a, e in booked.get(cid, [])) else "." for b in blocks]
+              for cid in courts}
+    return courts, blocks, status, ""
+
+
+SOURCES = {"playtomic": playtomic_day, "ebusy": ebusy_day}
+
+
 def analyse(club, now):
-    tenant_id, courts, hours = club_info(club["slug"])
-    rows = []
+    rows, cache = [], {}
     for days_ahead in (0, DAYS_AHEAD):
         day = (now + timedelta(days=days_ahead)).date()
-        rng = open_range(hours, day)
-        if not rng:
+        courts, blocks, status, note = SOURCES[club["source"]](club, day, cache)
+        keep = [i for i, b in enumerate(blocks) if days_ahead or b >= now]  # Vergangenes zeigt Playtomic nicht mehr an
+        if not keep:
             continue
-        free = free_intervals(tenant_id, day)
-        midnight = datetime.combine(day, datetime.min.time(), tzinfo=TZ)
-        blocks = [midnight + timedelta(minutes=m) for m in range(rng[0], rng[1], BLOCK_MIN)]
-        if days_ahead == 0:
-            blocks = [b for b in blocks if b >= now]  # Vergangenes zeigt Playtomic nicht mehr an
-        if not blocks:
-            continue
-        note = "" if free else "keine freien Online-Slots (ausgebucht oder nicht online buchbar)"
+        blocks = [blocks[i] for i in keep]
 
         totals = {"all": [0, 0], **{w[0]: [0, 0] for w in WINDOWS}}
         court_rows = []
         for cid, cname in courts.items():
-            ivs = free.get(cid, [])
-            status = ["." if any(a <= b < e for a, e in ivs) else "X" for b in blocks]
+            status_c = [status[cid][i] for i in keep]
             per = {"all": [0, 0], **{w[0]: [0, 0] for w in WINDOWS}}
-            for b, st in zip(blocks, status):
+            for b, st in zip(blocks, status_c):
                 keys = ["all"] + [w[0] for w in WINDOWS if w[1] <= b.hour < w[2]]
                 for k in keys:
                     per[k][0] += st == "X"
                     per[k][1] += 1
                     totals[k][0] += st == "X"
                     totals[k][1] += 1
-            court_rows.append(row(now, club, day, days_ahead, cname, per, blocks[0], "".join(status), note))
+            court_rows.append(row(now, club, day, days_ahead, cname, per, blocks[0], "".join(status_c), note))
         rows += [row(now, club, day, days_ahead, "ALLE", totals, blocks[0], "", note)] + court_rows
     return rows
 

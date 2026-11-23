@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Historische Padel-Auslastung nach Platz, Standort und Uhrzeit.">
+  <title>Padel-Auslastung · Region Augsburg</title>
+  <style>/* DASHBOARD_CSS */</style>
+</head>
+<body>
+  <header class="page-header">
+    <div><h1>Padel-Auslastung</h1><p>Region Augsburg</p></div>
+    <p id="data-stand"></p>
+  </header>
+  <main>
+    <section class="filters" aria-label="Filter">
+      <div class="presets" aria-label="Schnellauswahl Zeitraum">
+        <button type="button" data-days="7">7 Tage</button>
+        <button type="button" data-days="30">30 Tage</button>
+        <button type="button" data-days="90">90 Tage</button>
+        <button type="button" data-days="all">Gesamt</button>
+      </div>
+      <div class="fields">
+        <label>Von<input id="from" type="date"></label>
+        <label>Bis<input id="to" type="date"></label>
+        <label>Platztyp<select id="type"><option value="">Alle Typen</option></select></label>
+        <label>Standort<select id="club"><option value="">Alle Standorte</option></select></label>
+        <label>Platz<select id="court"><option value="">Alle Plätze</option></select></label>
+      </div>
+      <div class="options">
+        <label><input id="compare-courts" type="checkbox"> Plätze direkt vergleichen</label>
+        <label><input id="same-day" type="checkbox"> Nur Messungen vom Spieltag</label>
+        <label><input id="include-unknown" type="checkbox"> Mehrdeutige Sperren als belegt zählen</label>
+        <button type="button" id="export">Vergleich als CSV</button>
+      </div>
+      <p id="export-status" class="download-status" role="status" hidden></p>
+      <p id="filter-error" role="status" hidden></p>
+    </section>
+    <div id="results">
+      <section class="panel data-coverage" aria-labelledby="coverage-title">
+        <div class="section-head">
+          <div><h2 id="coverage-title">Welche Daten liegen vor?</h2><p id="coverage-period"></p></div>
+        </div>
+        <div id="coverage" class="scroll"></div>
+        <p id="coverage-cutoff"></p>
+        <div class="coverage-notes">
+          <p><strong>Preise und Zahlungen</strong> <span id="payment-coverage"></span> <a href="#finance-title">Zu Preisen und Einnahmen</a></p>
+          <p><strong>Buchungen und Sperren</strong> Die Quellen zeigen Kalenderbelegung. Buchungen, Wartung und andere Sperren lassen sich damit nicht zuverlässig unterscheiden.</p>
+        </div>
+      </section>
+      <section aria-label="Kennzahlen" id="kpis" class="kpis" aria-live="polite"></section>
+      <section class="panel">
+        <div class="section-head">
+          <div><h2>Auslastung im Zeitverlauf</h2><p>Belegte Blöcke geteilt durch auswertbare Blöcke.</p></div>
+          <label>Gruppierung<select id="bucket"><option value="day">Tage</option><option value="week">ISO-Wochen</option><option value="month">Kalendermonate</option></select></label>
+        </div>
+        <div id="trend" class="scroll"></div>
+      </section>
+      <section class="panel">
+        <div class="section-head"><div><h2>Vergleich nach Typ, Standort und Platz</h2><p>Der Vorzeitraum hat dieselbe Länge wie der gewählte Zeitraum.</p></div></div>
+        <div id="comparison" class="scroll"></div>
+      </section>
+      <section class="panel">
+        <div class="section-head">
+          <div><h2>Auslastung nach Wochentag und Uhrzeit</h2><p>Jede Zelle fasst die Messungen der jeweiligen Stunde zusammen.</p></div>
+          <label id="heatmap-day-label" hidden>Wochentag<select id="heatmap-day"><option value="">Alle Wochentage</option></select></label>
+        </div>
+        <div id="heatmap" class="scroll"></div>
+      </section>
+      <section class="panel">
+        <div class="section-head"><div><h2>Plätze pro Spieltag</h2><p id="calendar-hint">Ein Tageswert öffnet die zugehörigen Halbstundenblöcke.</p></div></div>
+        <div class="presets calendar-nav" id="calendar-nav" hidden>
+          <button type="button" id="calendar-newer">Neuere Tage</button>
+          <button type="button" id="calendar-older">Ältere Tage</button>
+          <span id="calendar-range" aria-live="polite"></span>
+        </div>
+        <div id="calendar" class="scroll"></div>
+        <div id="detail" class="detail" hidden></div>
+      </section>
+      <section class="panel">
+        <div class="section-head"><div><h2 id="finance-title">Preise und Einnahmen</h2><p>Zahlungsimport nach Spieltag, Standort und Platz.</p></div></div>
+        <div class="finance-options">
+          <label>Zahlungs-CSV lokal laden<input id="payments" type="file" accept=".csv,text/csv"></label>
+          <button type="button" id="payment-template">CSV-Vorlage</button>
+          <button type="button" id="reset-payments" hidden>Import entfernen</button>
+        </div>
+        <p id="template-status" class="download-status" role="status" hidden></p>
+        <p id="payment-status" role="status">Die Auslastungsdaten enthalten keine Zahlungen.</p>
+        <p>Der effektive Preis ergibt sich aus Einnahmen geteilt durch bezahlte Platzstunden. Der Import bleibt in diesem Browser-Tab.</p>
+        <details>
+          <summary>Stundentarife für die Szenariorechnung bearbeiten</summary>
+          <p>Die Rechnung multipliziert belegte Stunden mit dem eingegebenen Tarif. Öffentliche Serve-One-Listenpreise sind als Ausgangspunkt hinterlegt. Historische Tarife, Rabatte und Sperren können den Betrag verändern. <a href="https://serveonepadel.de/">Serve One Padel</a></p>
+          <p>Der DJK-Mitgliederpreis beträgt laut Verein 20 €/h. Für einen gemischten Spielerkreis kannst du einen eigenen Durchschnittstarif eingeben. <a href="https://www.djk-lechhausen.de/index.php?Itemid=871&amp;id=636&amp;option=com_sppagebuilder&amp;view=page">DJK Lechhausen</a></p>
+          <div id="rates" class="rate-grid"></div>
+        </details>
+        <div id="finance" class="scroll"></div>
+      </section>
+    </div>
+    <section class="panel methodology">
+      <h2>Datenbasis und Messlücken</h2>
+      <ul>
+        <li>Pro Platz und Halbstunde zählt der jüngste erfasste Kalenderstand. Wenn kein Stand vom Spieltag vorliegt, kann eine frühere Vorschau einfließen. Spiele, die zum Datenstand noch bevorstehen oder laufen, bleiben außerhalb der Auswertung.</li>
+        <li>Playtomic meldet verfügbare Zeiten. Die übrigen Zeiten können gebucht, gesperrt oder zu kurz zum Buchen sein. eBuSy erfasst Buchungen und Sperren gemeinsam. Blöcke aus mehrdeutigen Playtomic-Messungen werden standardmäßig aus der Quote herausgerechnet.</li>
+        <li>Der Durchschnitt gewichtet nach der Anzahl auswertbarer Halbstunden. Kalendertage ohne Messung erscheinen als Lücke. Standortvergleiche können sich auf unterschiedliche Tage und Uhrzeiten stützen.</li>
+      </ul>
+      <p id="source-notes"></p>
+    </section>
+  </main>
+  <script type="application/json" id="dashboard-data"><!-- DASHBOARD_DATA --></script>
+  <script>/* DASHBOARD_JS */</script>
+</body>
+</html>

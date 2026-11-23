@@ -26,3 +26,34 @@ Die Ergebnisse werden an [data/occupancy.csv](data/occupancy.csv) angehängt, ei
 **eBuSy** (DJK, TSG): Ein Block zählt als belegt, wenn eine Buchung oder Sperre ihn abdeckt. Das Raster (Plätze, Uhrzeiten) stammt aus der öffentlichen Tagesansicht, die Buchungen aus deren JSON-Abfrage (`?selectedDate=MM/DD/YYYY`). Ein Login ist nicht nötig. Bei den Außenplätzen kann das Wetter die Zahlen verzerren.
 
 Soll das in der Cloud laufen, muss die Umgebung diese Domains erreichen dürfen: `playtomic.com`, `padel-djk-lechhausen.ebusy.de` und `ebusy.padelstars.eu`.
+
+## Auslastungsdashboard
+
+`padel-dashboard.html` im Browser öffnen. Die Datei enthält die ausgewerteten Messungen und läuft offline. Nach neuen Erfassungen lässt sich die Datei neu bauen:
+
+```bash
+python3 -B build_dashboard.py
+```
+
+Die Oberfläche bietet frei wählbare Zeiträume, Tages-, Wochen- und Monatsansichten, den Vergleich mit einem gleich langen Vorzeitraum sowie Filter nach Indoor/Outdoor, Standort und Platz. Die Tagesmatrix öffnet die Halbstundenübersicht pro Platz. Der Vergleich lässt sich als CSV herunterladen.
+
+„Plätze direkt vergleichen“ zeigt Kennzahlen, Zeitverlauf, Auslastung nach Uhrzeit und Einnahmen in einheitlichen Zeilen pro Platz. In diesem Modus öffnet ein Tageswert die Halbstunden aller Plätze für denselben Tag.
+
+Für die Quote zählt jeder auswertbare Halbstundenblock einmal. Pro Block gilt der jüngste erfasste Stand, einschließlich Vorschauen, wenn vom Spieltag keine Messung vorliegt. Mehrdeutige Meldungen sind standardmäßig ausgeklammert. Die Übersicht zur Datenbasis zeigt Erfassungslücken und Vorschauanteile.
+
+### Zahlungen importieren
+
+In der Rubrik „Preise und Einnahmen“ gibt es eine CSV-Vorlage für einen lokalen Import. Erwartet wird eine Summenzeile je Spieltag und Platz mit diesen Spalten:
+
+```csv
+date;club;court;revenue_eur;paid_hours
+```
+
+- `date` im Format `JJJJ-MM-TT`. `club` und `court` entsprechen den Anzeigenamen aus der Erfassung.
+- `revenue_eur` ist die tatsächlich vereinnahmte Platzmiete nach Erstattungen in Euro. `paid_hours` sind die dazugehörigen bezahlten Platzstunden.
+- Komma und Semikolon werden als Feldtrenner unterstützt. Bei Semikolon als Feldtrenner sind Werte wie `38,00` und `1,5` möglich.
+- Der Import bleibt im aktiven Browser-Tab. Die Tarifrechnung nutzt belegte Stunden und bearbeitbare €/h-Werte. Ihre Abdeckung steht neben dem Szenariobetrag.
+
+### Veröffentlichen
+
+Die erzeugte HTML-Datei lässt sich als Dateiartefakt teilen oder als `index.html` bei einem statischen Hoster bereitstellen. Für einen aktuellen Link kann der Erfassungslauf bei Erfolg einen Neubau und ein Deployment der HTML-Datei auslösen.

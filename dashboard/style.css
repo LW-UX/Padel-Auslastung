@@ -1,0 +1,118 @@
+:root {
+  color-scheme: light;
+  font: 16px/1.45 system-ui, sans-serif;
+  background: #f0f4f6;
+  color: #182936;
+  --muted: #485b68;
+  --line: #d4dfe5;
+  --ink: #214557;
+  --surface: #fff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+.page-header, main { max-width: 1440px; margin: 0 auto; padding-inline: clamp(1rem, 3vw, 3rem); }
+.page-header { display: flex; justify-content: space-between; align-items: end; gap: 1rem; padding-block: 1.8rem 1.2rem; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.1; letter-spacing: -.035em; }
+h2 { font-size: 1.15rem; }
+h3 { font-size: 1rem; }
+p { color: var(--muted); }
+.page-header p { margin-top: .35rem; }
+#data-stand { font-size: .875rem; }
+main { padding-bottom: 2rem; }
+.panel, .filters, .kpis article { border: 1px solid var(--line); background: var(--surface); border-radius: .75rem; padding: 1rem; }
+.panel, .kpis { margin-top: 1rem; }
+.presets, .fields, .options, .section-head, .finance-options { display: flex; gap: .65rem 1rem; flex-wrap: wrap; align-items: end; }
+.fields { margin-block: .8rem; }
+.options { align-items: center; }
+.options button { margin-left: auto; }
+label { display: grid; gap: .25rem; font-size: .875rem; font-weight: 600; }
+.options label { display: flex; align-items: center; }
+button, input, select { font: inherit; }
+button, input:not([type="checkbox"]), select { background: #fff; color: #182936; border: 1px solid #a9bbc6; border-radius: .35rem; padding: .42rem .65rem; min-height: 2.2rem; }
+select {
+  appearance: none;
+  padding-right: 1.9rem;
+  background-image: linear-gradient(45deg, transparent 50%, #375767 50%), linear-gradient(135deg, #375767 50%, transparent 50%);
+  background-position: calc(100% - 13px) center, calc(100% - 8px) center;
+  background-repeat: no-repeat;
+  background-size: 5px 5px;
+}
+input[type="file"] { max-width: 100%; }
+button { font-size: .875rem; font-weight: 650; cursor: pointer; }
+button:hover { border-color: #216476; }
+button[aria-pressed="true"] { color: #fff; background: #20495e; border-color: #20495e; }
+button:disabled { opacity: .55; cursor: default; }
+a { color: #195772; }
+:focus-visible { outline: 3px solid #1d7292; outline-offset: 2px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr)); gap: .65rem; }
+.kpis strong { display: block; font-size: 1.8rem; margin-top: .1rem; font-variant-numeric: tabular-nums; }
+.kpis h2, .kpis p { font-size: .875rem; }
+.section-head { justify-content: space-between; align-items: start; margin-bottom: .75rem; }
+.section-head p { margin-top: .2rem; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: .875rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; border-bottom: 1px solid var(--line); padding: .5rem .6rem; }
+thead th { background: #edf3f6; color: #284554; }
+tbody th { font-weight: 600; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.badge { display: inline-block; border-radius: .25rem; padding: .12rem .35rem; white-space: nowrap; }
+.trend { display: flex; gap: .5rem; min-width: min-content; padding-bottom: .35rem; }
+.bar-column {
+  display: grid;
+  grid-template-rows: 1.35rem 7.5rem auto;
+  text-align: center;
+  flex: 1 0 auto;
+  min-width: 48px;
+  gap: .22rem;
+  font-size: .875rem;
+  font-variant-numeric: tabular-nums;
+}
+.bar-track { display: flex; align-items: end; background: #edf3f6; border-bottom: 1px solid #a9bbc6; border-radius: .3rem .3rem 0 0; }
+.bar { width: 100%; background: #277087; border-radius: .3rem .3rem 0 0; }
+.bar-weekday { display: block; color: var(--muted); }
+.matrix td, .matrix thead th:not(:first-child) { text-align: center; white-space: nowrap; min-width: 3.6rem; }
+.matrix th:first-child { position: sticky; left: 0; background: #edf3f6; z-index: 1; }
+.court-matrix th:first-child { min-width: 10rem; text-align: left; }
+.court-matrix abbr { text-decoration: none; }
+.calendar td { padding: .2rem; }
+.calendar-nav { margin-bottom: .65rem; align-items: center; }
+.calendar tbody th { min-width: 10rem; }
+.calendar button { width: 100%; white-space: nowrap; border-color: transparent; }
+.missing { background: repeating-linear-gradient(135deg, #f9fbfc 0 5px, #edf2f5 5px 7px); }
+.heat-0, .free { background: #e5f5f3; }
+.heat-1 { background: #cae9e6; }
+.heat-2 { background: #a4d8d6; }
+.heat-3 { background: #6fb8bd; }
+.heat-4, .booked { background: #26667b; color: #fff; }
+.unclear { background: #fff0d4; }
+.detail { margin-top: 1rem; padding: .8rem; background: #f2f6f8; border-radius: .45rem; }
+.detail .scroll { margin-top: .6rem; }
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: .3rem; margin-top: .6rem; }
+.slots > div { display: grid; gap: .2rem; padding: .25rem .45rem; font-size: .875rem; border-radius: .25rem; }
+.finance-options, #payment-status, details, #source-notes { margin-block: .65rem; }
+.rate-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: .55rem; margin-top: .65rem; }
+.rate-grid input { width: 100%; }
+summary { cursor: pointer; font-weight: 650; }
+details p { margin-top: .45rem; }
+.methodology ul { padding-left: 1.25rem; color: var(--muted); }
+.methodology li + li { margin-top: .25rem; }
+.data-coverage table { min-width: 650px; }
+.data-coverage td { vertical-align: top; }
+.coverage-type { display: block; color: var(--muted); font-weight: 400; }
+.data-coverage details { margin: .25rem 0 0; font-weight: 400; }
+.data-coverage summary { color: var(--ink); font-weight: 500; }
+.data-coverage dl { margin: .4rem 0; }
+.data-coverage dt { margin-top: .4rem; font-weight: 600; }
+.data-coverage dd { margin-left: 0; }
+.coverage-notes { display: grid; gap: .5rem; margin-top: .75rem; }
+#coverage-cutoff { margin-top: .6rem; }
+.coverage-notes strong { color: #182936; margin-right: .25rem; }
+#filter-error, .download-status { margin-top: .65rem; color: #8b341d; }
+@media (max-width: 610px) {
+  .page-header { flex-direction: column; align-items: start; gap: .3rem; }
+  .fields label { max-width: 100%; }
+  .fields select { max-width: 100%; }
+  .options button { margin-left: 0; }
+}

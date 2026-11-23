@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Historische Padel-Auslastung nach Platz, Standort und Uhrzeit.">
+  <title>Padel-Auslastung · Region Augsburg</title>
+  <style>:root {
+  color-scheme: light;
+  font: 16px/1.45 system-ui, sans-serif;
+  background: #f0f4f6;
+  color: #182936;
+  --muted: #485b68;
+  --line: #d4dfe5;
+  --ink: #214557;
+  --surface: #fff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+.page-header, main { max-width: 1440px; margin: 0 auto; padding-inline: clamp(1rem, 3vw, 3rem); }
+.page-header { display: flex; justify-content: space-between; align-items: end; gap: 1rem; padding-block: 1.8rem 1.2rem; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.1; letter-spacing: -.035em; }
+h2 { font-size: 1.15rem; }
+h3 { font-size: 1rem; }
+p { color: var(--muted); }
+.page-header p { margin-top: .35rem; }
+#data-stand { font-size: .875rem; }
+main { padding-bottom: 2rem; }
+.panel, .filters, .kpis article { border: 1px solid var(--line); background: var(--surface); border-radius: .75rem; padding: 1rem; }
+.panel, .kpis { margin-top: 1rem; }
+.presets, .fields, .options, .section-head, .finance-options { display: flex; gap: .65rem 1rem; flex-wrap: wrap; align-items: end; }
+.fields { margin-block: .8rem; }
+.options { align-items: center; }
+.options button { margin-left: auto; }
+label { display: grid; gap: .25rem; font-size: .875rem; font-weight: 600; }
+.options label { display: flex; align-items: center; }
+button, input, select { font: inherit; }
+button, input:not([type="checkbox"]), select { background: #fff; color: #182936; border: 1px solid #a9bbc6; border-radius: .35rem; padding: .42rem .65rem; min-height: 2.2rem; }
+select {
+  appearance: none;
+  padding-right: 1.9rem;
+  background-image: linear-gradient(45deg, transparent 50%, #375767 50%), linear-gradient(135deg, #375767 50%, transparent 50%);
+  background-position: calc(100% - 13px) center, calc(100% - 8px) center;
+  background-repeat: no-repeat;
+  background-size: 5px 5px;
+}
+input[type="file"] { max-width: 100%; }
+button { font-size: .875rem; font-weight: 650; cursor: pointer; }
+button:hover { border-color: #216476; }
+button[aria-pressed="true"] { color: #fff; background: #20495e; border-color: #20495e; }
+button:disabled { opacity: .55; cursor: default; }
+a { color: #195772; }
+:focus-visible { outline: 3px solid #1d7292; outline-offset: 2px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr)); gap: .65rem; }
+.kpis strong { display: block; font-size: 1.8rem; margin-top: .1rem; font-variant-numeric: tabular-nums; }
+.kpis h2, .kpis p { font-size: .875rem; }
+.section-head { justify-content: space-between; align-items: start; margin-bottom: .75rem; }
+.section-head p { margin-top: .2rem; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: .875rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; border-bottom: 1px solid var(--line); padding: .5rem .6rem; }
+thead th { background: #edf3f6; color: #284554; }
+tbody th { font-weight: 600; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.badge { display: inline-block; border-radius: .25rem; padding: .12rem .35rem; white-space: nowrap; }
+.trend { display: flex; gap: .5rem; min-width: min-content; padding-bottom: .35rem; }
+.bar-column {
+  display: grid;
+  grid-template-rows: 1.35rem 7.5rem auto;
+  text-align: center;
+  flex: 1 0 auto;
+  min-width: 48px;
+  gap: .22rem;
+  font-size: .875rem;
+  font-variant-numeric: tabular-nums;
+}
+.bar-track { display: flex; align-items: end; background: #edf3f6; border-bottom: 1px solid #a9bbc6; border-radius: .3rem .3rem 0 0; }
+.bar { width: 100%; background: #277087; border-radius: .3rem .3rem 0 0; }
+.bar-weekday { display: block; color: var(--muted); }
+.matrix td, .matrix thead th:not(:first-child) { text-align: center; white-space: nowrap; min-width: 3.6rem; }
+.matrix th:first-child { position: sticky; left: 0; background: #edf3f6; z-index: 1; }
+.court-matrix th:first-child { min-width: 10rem; text-align: left; }
+.court-matrix abbr { text-decoration: none; }
+.calendar td { padding: .2rem; }
+.calendar-nav { margin-bottom: .65rem; align-items: center; }
+.calendar tbody th { min-width: 10rem; }
+.calendar button { width: 100%; white-space: nowrap; border-color: transparent; }
+.missing { background: repeating-linear-gradient(135deg, #f9fbfc 0 5px, #edf2f5 5px 7px); }
+.heat-0, .free { background: #e5f5f3; }
+.heat-1 { background: #cae9e6; }
+.heat-2 { background: #a4d8d6; }
+.heat-3 { background: #6fb8bd; }
+.heat-4, .booked { background: #26667b; color: #fff; }
+.unclear { background: #fff0d4; }
+.detail { margin-top: 1rem; padding: .8rem; background: #f2f6f8; border-radius: .45rem; }
+.detail .scroll { margin-top: .6rem; }
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: .3rem; margin-top: .6rem; }
+.slots > div { display: grid; gap: .2rem; padding: .25rem .45rem; font-size: .875rem; border-radius: .25rem; }
+.finance-options, #payment-status, details, #source-notes { margin-block: .65rem; }
+.rate-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: .55rem; margin-top: .65rem; }
+.rate-grid input { width: 100%; }
+summary { cursor: pointer; font-weight: 650; }
+details p { margin-top: .45rem; }
+.methodology ul { padding-left: 1.25rem; color: var(--muted); }
+.methodology li + li { margin-top: .25rem; }
+.data-coverage table { min-width: 650px; }
+.data-coverage td { vertical-align: top; }
+.coverage-type { display: block; color: var(--muted); font-weight: 400; }
+.data-coverage details { margin: .25rem 0 0; font-weight: 400; }
+.data-coverage summary { color: var(--ink); font-weight: 500; }
+.data-coverage dl { margin: .4rem 0; }
+.data-coverage dt { margin-top: .4rem; font-weight: 600; }
+.data-coverage dd { margin-left: 0; }
+.coverage-notes { display: grid; gap: .5rem; margin-top: .75rem; }
+#coverage-cutoff { margin-top: .6rem; }
+.coverage-notes strong { color: #182936; margin-right: .25rem; }
+#filter-error, .download-status { margin-top: .65rem; color: #8b341d; }
+@media (max-width: 610px) {
+  .page-header { flex-direction: column; align-items: start; gap: .3rem; }
+  .fields label { max-width: 100%; }
+  .fields select { max-width: 100%; }
+  .options button { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+  <header class="page-header">
+    <div><h1>Padel-Auslastung</h1><p>Region Augsburg</p></div>
+    <p id="data-stand"></p>
+  </header>
+  <main>
+    <section class="filters" aria-label="Filter">
+      <div class="presets" aria-label="Schnellauswahl Zeitraum">
+        <button type="button" data-days="7">7 Tage</button>
+        <button type="button" data-days="30">30 Tage</button>
+        <button type="button" data-days="90">90 Tage</button>
+        <button type="button" data-days="all">Gesamt</button>
+      </div>
+      <div class="fields">
+        <label>Von<input id="from" type="date"></label>
+        <label>Bis<input id="to" type="date"></label>
+        <label>Platztyp<select id="type"><option value="">Alle Typen</option></select></label>
+        <label>Standort<select id="club"><option value="">Alle Standorte</option></select></label>
+        <label>Platz<select id="court"><option value="">Alle Plätze</option></select></label>
+      </div>
+      <div class="options">
+        <label><input id="compare-courts" type="checkbox"> Plätze direkt vergleichen</label>
+        <label><input id="same-day" type="checkbox"> Nur Messungen vom Spieltag</label>
+        <label><input id="include-unknown" type="checkbox"> Mehrdeutige Sperren als belegt zählen</label>
+        <button type="button" id="export">Vergleich als CSV</button>
+      </div>
+      <p id="export-status" class="download-status" role="status" hidden></p>
+      <p id="filter-error" role="status" hidden></p>
+    </section>
+    <div id="results">
+      <section class="panel data-coverage" aria-labelledby="coverage-title">
+        <div class="section-head">
+          <div><h2 id="coverage-title">Welche Daten liegen vor?</h2><p id="coverage-period"></p></div>
+        </div>
+        <div id="coverage" class="scroll"></div>
+        <p id="coverage-cutoff"></p>
+        <div class="coverage-notes">
+          <p><strong>Preise und Zahlungen</strong> <span id="payment-coverage"></span> <a href="#finance-title">Zu Preisen und Einnahmen</a></p>
+          <p><strong>Buchungen und Sperren</strong> Die Quellen zeigen Kalenderbelegung. Buchungen, Wartung und andere Sperren lassen sich damit nicht zuverlässig unterscheiden.</p>
+        </div>
+      </section>
+      <section aria-label="Kennzahlen" id="kpis" class="kpis" aria-live="polite"></section>
+      <section class="panel">
+        <div class="section-head">
+          <div><h2>Auslastung im Zeitverlauf</h2><p>Belegte Blöcke geteilt durch auswertbare Blöcke.</p></div>
+          <label>Gruppierung<select id="bucket"><option value="day">Tage</option><option value="week">ISO-Wochen</option><option value="month">Kalendermonate</option></select></label>
+        </div>
+        <div id="trend" class="scroll"></div>
+      </section>
+      <section class="panel">
+        <div class="section-head"><div><h2>Vergleich nach Typ, Standort und Platz</h2><p>Der Vorzeitraum hat dieselbe Länge wie der gewählte Zeitraum.</p></div></div>
+        <div id="comparison" class="scroll"></div>
+      </section>
+      <section class="panel">
+        <div class="section-head">
+          <div><h2>Auslastung nach Wochentag und Uhrzeit</h2><p>Jede Zelle fasst die Messungen der jeweiligen Stunde zusammen.</p></div>
+          <label id="heatmap-day-label" hidden>Wochentag<select id="heatmap-day"><option value="">Alle Wochentage</option></select></label>
+        </div>
+        <div id="heatmap" class="scroll"></div>
+      </section>
+      <section class="panel">
+        <div class="section-head"><div><h2>Plätze pro Spieltag</h2><p id="calendar-hint">Ein Tageswert öffnet die zugehörigen Halbstundenblöcke.</p></div></div>
+        <div class="presets calendar-nav" id="calendar-nav" hidden>
+          <button type="button" id="calendar-newer">Neuere Tage</button>
+          <button type="button" id="calendar-older">Ältere Tage</button>
+          <span id="calendar-range" aria-live="polite"></span>
+        </div>
+        <div id="calendar" class="scroll"></div>
+        <div id="detail" class="detail" hidden></div>
+      </section>
+      <section class="panel">
+        <div class="section-head"><div><h2 id="finance-title">Preise und Einnahmen</h2><p>Zahlungsimport nach Spieltag, Standort und Platz.</p></div></div>
+        <div class="finance-options">
+          <label>Zahlungs-CSV lokal laden<input id="payments" type="file" accept=".csv,text/csv"></label>
+          <button type="button" id="payment-template">CSV-Vorlage</button>
+          <button type="button" id="reset-payments" hidden>Import entfernen</button>
+        </div>
+        <p id="template-status" class="download-status" role="status" hidden></p>
+        <p id="payment-status" role="status">Die Auslastungsdaten enthalten keine Zahlungen.</p>
+        <p>Der effektive Preis ergibt sich aus Einnahmen geteilt durch bezahlte Platzstunden. Der Import bleibt in diesem Browser-Tab.</p>
+        <details>
+          <summary>Stundentarife für die Szenariorechnung bearbeiten</summary>
+          <p>Die Rechnung multipliziert belegte Stunden mit dem eingegebenen Tarif. Öffentliche Serve-One-Listenpreise sind als Ausgangspunkt hinterlegt. Historische Tarife, Rabatte und Sperren können den Betrag verändern. <a href="https://serveonepadel.de/">Serve One Padel</a></p>
+          <p>Der DJK-Mitgliederpreis beträgt laut Verein 20 €/h. Für einen gemischten Spielerkreis kannst du einen eigenen Durchschnittstarif eingeben. <a href="https://www.djk-lechhausen.de/index.php?Itemid=871&amp;id=636&amp;option=com_sppagebuilder&amp;view=page">DJK Lechhausen</a></p>
+          <div id="rates" class="rate-grid"></div>
+        </details>
+        <div id="finance" class="scroll"></div>
+      </section>
+    </div>
+    <section class="panel methodology">
+      <h2>Datenbasis und Messlücken</h2>
+      <ul>
+        <li>Pro Platz und Halbstunde zählt der jüngste erfasste Kalenderstand. Wenn kein Stand vom Spieltag vorliegt, kann eine frühere Vorschau einfließen. Spiele, die zum Datenstand noch bevorstehen oder laufen, bleiben außerhalb der Auswertung.</li>
+        <li>Playtomic meldet verfügbare Zeiten. Die übrigen Zeiten können gebucht, gesperrt oder zu kurz zum Buchen sein. eBuSy erfasst Buchungen und Sperren gemeinsam. Blöcke aus mehrdeutigen Playtomic-Messungen werden standardmäßig aus der Quote herausgerechnet.</li>
+        <li>Der Durchschnitt gewichtet nach der Anzahl auswertbarer Halbstunden. Kalendertage ohne Messung erscheinen als Lücke. Standortvergleiche können sich auf unterschiedliche Tage und Uhrzeiten stützen.</li>
+      </ul>
+      <p id="source-notes"></p>
+    </section>
+  </main>
+  <script type="application/json" id="dashboard-data">{"latest":"2026-11-23T15:10","clubs":{"Serve One Langweid":"Indoor","Serve One Bergheim":"Indoor","4030 Padel Club Augsburg":"Indoor","DJK Lechhausen":"Outdoor","TSG Lechhausen":"Outdoor"},"openingDates":{"4030 Padel Club Augsburg":"2026-11-25"},"runs":{"Serve One Langweid":"2026-11-17T10:07","Serve One Bergheim":"2026-11-17T10:07","DJK Lechhausen":"2026-11-23T15:10","TSG Lechhausen":"2026-11-23T15:10"},"records":[["2026-10-24","DJK Lechhausen","Padel-Court 1","-----------------------X..XXXXXXXXXX..........--"],["2026-10-24","DJK Lechhausen","Padel-Court 2","-----------------------XXX...XXX..............--"],["2026-10-24","Serve One Bergheim","Doppel Court","-----------------------XXXXXXXXXXXXXXXXXXXXX----"],["2026-10-24","Serve One Bergheim","Single Court","-----------------------XXXXXXXXXXXXXXXXXXX..----"],["2026-10-24","Serve One Langweid","Padel 1 Doppel","-----------------------XXXXXXXXXXXXXXXXXXXXXX..."],["2026-10-24","Serve One Langweid","Padel 2 Doppel","-----------------------XXXXXXXXXXXXXXXXXXXXXXX.."],["2026-10-24","Serve One Langweid","Padel 3 Einzel","-----------------------XXXXXXXXXXXXXXXXXXXXXX..."],["2026-10-24","TSG Lechhausen","Court 1","-----------------------XX..XXXXXX...........----"],["2026-10-24","TSG Lechhausen","Court 2","-----------------------.XX..................----"],["2026-10-24","TSG Lechhausen","Court 3","-----------------------.....................----"],["2026-10-25","DJK Lechhausen","Padel-Court 1","--------------..........XXX.........XXXXXX....--"],["2026-10-25","DJK Lechhausen","Padel-Court 2","--------------......XXX.......................--"],["2026-10-25","Serve One Bergheim","Doppel Court","--------------..XXXXX???????????????????????----"],["2026-10-25","Serve One Bergheim","Single Court","--------------..XXXXX???????????????????????----"],["2026-10-25","Serve One Langweid","Padel 1 Doppel","-------------...XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"],["2026-10-25","Serve One Langweid","Padel 2 Doppel","-------------..XXXXXXXXXXXXXXXXXXXXXXXXXXXXX...."],["2026-10-25","Serve One Langweid","Padel 3 Einzel","-------------...XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-10-25","TSG Lechhausen","Court 1","----------------..XXXX..XX..................----"],["2026-10-25","TSG Lechhausen","Court 2","----------------............................----"],["2026-10-25","TSG Lechhausen","Court 3","----------------............................----"],["2026-10-26","DJK Lechhausen","Padel-Court 1","--------------...................XXXXX........--"],["2026-10-26","DJK Lechhausen","Padel-Court 2","--------------.....................XXX........--"],["2026-10-26","Serve One Bergheim","Doppel Court","--------------....XXXX........XXX..XXXXXXXXX----"],["2026-10-26","Serve One Bergheim","Single Court","--------------....XXXXXXXX..XX.XXXXXXXXXXX..----"],["2026-10-26","Serve One Langweid","Padel 1 Doppel","-------------XXXXX................XXXXXXXXXXXX.."],["2026-10-26","Serve One Langweid","Padel 2 Doppel","-------------..................XXXXXXXXXXXXXXXXX"],["2026-10-26","Serve One Langweid","Padel 3 Einzel","-------------...............XX.X..XXXXXXXXXX...."],["2026-10-26","TSG Lechhausen","Court 1","----------------....................XXX.XXX.----"],["2026-10-26","TSG Lechhausen","Court 2","----------------..................XXXXX.....----"],["2026-10-26","TSG Lechhausen","Court 3","----------------....................XXX.....----"],["2026-10-27","DJK Lechhausen","Padel-Court 1","--------------........XXX.....XXXXXXXXXXXX....--"],["2026-10-27","DJK Lechhausen","Padel-Court 2","--------------..................XXXXXXXXXXXX..--"],["2026-10-27","Serve One Bergheim","Doppel Court","--------------..................????????????----"],["2026-10-27","Serve One Bergheim","Single Court","--------------....XXXX...XXXXXXX????????????----"],["2026-10-27","Serve One Langweid","Padel 1 Doppel","-------------...XXXXXX..........XXXXXXXXXXXXXXXX"],["2026-10-27","Serve One Langweid","Padel 2 Doppel","-------------....XXXX.........XXXXXXXXXXXXXX...."],["2026-10-27","Serve One Langweid","Padel 3 Einzel","-------------..................XXXXXXXXXXXXXX..."],["2026-10-27","TSG Lechhausen","Court 1","----------------.............XX...XXXXX.....----"],["2026-10-27","TSG Lechhausen","Court 2","----------------................XXXXXXXXX...----"],["2026-10-27","TSG Lechhausen","Court 3","----------------.................XX.XX......----"],["2026-10-28","DJK Lechhausen","Padel-Court 1","--------------.................XXXXXXXXXXXXX..--"],["2026-10-28","DJK Lechhausen","Padel-Court 2","--------------...............XX.XXX...........--"],["2026-10-28","Serve One Bergheim","Doppel Court","--------------.....XXX........X?????????????----"],["2026-10-28","Serve One Bergheim","Single Court","--------------.......XXX.....XX?????????????----"],["2026-10-28","Serve One Langweid","Padel 1 Doppel","----------fff.....XXXXXX..XXXXXXXXXXXXXXXXXX...."],["2026-10-28","Serve One Langweid","Padel 2 Doppel","----------fff..........XX...XX.XXXXXXXXXXXXX...."],["2026-10-28","Serve One Langweid","Padel 3 Einzel","----------fff.....XX.X......XXXXXXXXXXXXXXXXXXXX"],["2026-10-28","TSG Lechhausen","Court 1","----------------..................XXXX..XXX.----"],["2026-10-28","TSG Lechhausen","Court 2","----------------............................----"],["2026-10-28","TSG Lechhausen","Court 3","----------------................XXX.........----"],["2026-10-29","DJK Lechhausen","Padel-Court 1","--------------.................XXXXX..........--"],["2026-10-29","DJK Lechhausen","Padel-Court 2","--------------.................XXXXXX.XX......--"],["2026-10-29","Serve One Bergheim","Doppel Court","--------------.........XX......?????????????----"],["2026-10-29","Serve One Bergheim","Single Court","--------------.....XX....XX...X?????????????----"],["2026-10-29","Serve One Langweid","Padel 1 Doppel","----------fff..........XXX.....XXXXXXXXXXXXXXXXX"],["2026-10-29","Serve One Langweid","Padel 2 Doppel","----------fff...XX.......XXXX..XXXXXXXXXXXXX...."],["2026-10-29","Serve One Langweid","Padel 3 Einzel","----------fff.......XXXXXXXX..XXXXXXXXXXXXXXXX.."],["2026-10-29","TSG Lechhausen","Court 1","----------------..............XXX..XXX......----"],["2026-10-29","TSG Lechhausen","Court 2","----------------..........XXXX....XXX..XXX..----"],["2026-10-29","TSG Lechhausen","Court 3","----------------............................----"],["2026-10-30","DJK Lechhausen","Padel-Court 1","--------------..............XXX..XXX..........--"],["2026-10-30","DJK Lechhausen","Padel-Court 2","--------------......XXXX......XXX..XXXX.......--"],["2026-10-30","Serve One Bergheim","Doppel Court","--------------............XXXX.?????????????----"],["2026-10-30","Serve One Bergheim","Single Court","--------------......XXX.......X?????????????----"],["2026-10-30","Serve One Langweid","Padel 1 Doppel","----------fff....XXXXX.......XXXXXXXXXXXXXXXXXXX"],["2026-10-30","Serve One Langweid","Padel 2 Doppel","----------fff...XXX.........XXXXXXXXXXXXXXXXXXXX"],["2026-10-30","Serve One Langweid","Padel 3 Einzel","----------fff......XX.........XXXXXXXXXXXXXXXX.."],["2026-10-30","TSG Lechhausen","Court 1","----------------................XXXXX.......----"],["2026-10-30","TSG Lechhausen","Court 2","----------------....................XX......----"],["2026-10-30","TSG Lechhausen","Court 3","----------------............XXX...XXX.......----"],["2026-10-31","DJK Lechhausen","Padel-Court 1","--------------....XXXX...........XX...........--"],["2026-10-31","DJK Lechhausen","Padel-Court 2","--------------.......XXX..XX..XXXX............--"],["2026-10-31","Serve One Bergheim","Doppel Court","--------------....XXX???????????????????????----"],["2026-10-31","Serve One Bergheim","Single Court","--------------....XXX???????????????????????----"],["2026-10-31","Serve One Langweid","Padel 1 Doppel","fffffffffffff...XXXXXXXXXXXXXXXXXXXXXX....XXXXX."],["2026-10-31","Serve One Langweid","Padel 2 Doppel","xxfffffffffff...XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-10-31","Serve One Langweid","Padel 3 Einzel","fffffffffffff.....XXXXXXXXXXXXXXXXXXXXXXXX......"],["2026-10-31","TSG Lechhausen","Court 1","----------------..XXXXXXXXX.....XX..........----"],["2026-10-31","TSG Lechhausen","Court 2","----------------......XXXXX...XXX...........----"],["2026-10-31","TSG Lechhausen","Court 3","----------------......XXXXX.XXX.............----"],["2026-11-01","DJK Lechhausen","Padel-Court 1","--------------........XX......................--"],["2026-11-01","DJK Lechhausen","Padel-Court 2","--------------..................XXX...........--"],["2026-11-01","Serve One Bergheim","Doppel Court","--------------..XXXXX???????????????????????----"],["2026-11-01","Serve One Bergheim","Single Court","--------------XXXXXXX???????????????????????----"],["2026-11-01","Serve One Langweid","Padel 1 Doppel","fffffffffffff.....XXXXXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-11-01","Serve One Langweid","Padel 2 Doppel","xxxffffffffff...XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-11-01","Serve One Langweid","Padel 3 Einzel","fffffffffffff...XXXXXXXXXXXXXXXXXXXXXXXXXXXX...."],["2026-11-01","TSG Lechhausen","Court 1","----------------........XXX.XXXX......XXX...----"],["2026-11-01","TSG Lechhausen","Court 2","----------------................XX..........----"],["2026-11-01","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-02","DJK Lechhausen","Padel-Court 1","--------------....................XXX...XX....--"],["2026-11-02","DJK Lechhausen","Padel-Court 2","--------------..........................XX....--"],["2026-11-02","Serve One Bergheim","Doppel Court","--------------.......XXXX.....XX..XXXXXXXXXX----"],["2026-11-02","Serve One Bergheim","Single Court","--------------.........XXXXXXXXXXXXXXXXXXXXX----"],["2026-11-02","Serve One Langweid","Padel 1 Doppel","----------fff...XXX....XX..XXX..XXXXXXXXXXXX...."],["2026-11-02","Serve One Langweid","Padel 2 Doppel","----------fff...................XXXXXXXXXXXXX..."],["2026-11-02","Serve One Langweid","Padel 3 Einzel","----------fffX..XXX.....XXXXXXXXXXXXXXXXXXXX..XX"],["2026-11-02","TSG Lechhausen","Court 1","----------------.....................XXXX...----"],["2026-11-02","TSG Lechhausen","Court 2","----------------.....................XXXX...----"],["2026-11-02","TSG Lechhausen","Court 3","----------------.................XXX........----"],["2026-11-03","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-03","DJK Lechhausen","Padel-Court 2","--------------..................XXXXX.........--"],["2026-11-03","Serve One Bergheim","Doppel Court","--------------??????????????????????????????----"],["2026-11-03","Serve One Bergheim","Single Court","--------------??????????????????????????????----"],["2026-11-03","Serve One Langweid","Padel 1 Doppel","----------fff........XXXX......XXXXXXXXXXXXXXXXX"],["2026-11-03","Serve One Langweid","Padel 2 Doppel","----------fff...........XX........XXXX..XXXXXXXX"],["2026-11-03","Serve One Langweid","Padel 3 Einzel","----------fff........XXXXXXXXXXXXXXXXXXXXXXXX..."],["2026-11-03","TSG Lechhausen","Court 1","----------------.................XXXXX......----"],["2026-11-03","TSG Lechhausen","Court 2","----------------.................XXX.XXXX...----"],["2026-11-03","TSG Lechhausen","Court 3","----------------.................XXXX.XXXX..----"],["2026-11-04","DJK Lechhausen","Padel-Court 1","--------------..............XXXXXX............--"],["2026-11-04","DJK Lechhausen","Padel-Court 2","--------------........XX..................XX..--"],["2026-11-04","Serve One Bergheim","Doppel Court","--------------......XXXXXX..XX.?????????????----"],["2026-11-04","Serve One Bergheim","Single Court","--------------XXXXXXXXXXXXXX..X?????????????----"],["2026-11-04","Serve One Langweid","Padel 1 Doppel","----------fff...XXX.....XXXX..XXXXXXXXXXXXXXXXXX"],["2026-11-04","Serve One Langweid","Padel 2 Doppel","----------fff.....XXXXXXXX..XXXXXXXXXXXXXXXXXX.."],["2026-11-04","Serve One Langweid","Padel 3 Einzel","----------fff.....XXXXXX.....XXXXXXXXXXXXXXXX..."],["2026-11-04","TSG Lechhausen","Court 1","----------------....................XX......----"],["2026-11-04","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-04","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-05","DJK Lechhausen","Padel-Court 1","--------------.................XX.............--"],["2026-11-05","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-05","Serve One Bergheim","Doppel Court","--------------.......XX...XX..X?????????????----"],["2026-11-05","Serve One Bergheim","Single Court","--------------.....XX..XXXX..XX?????????????----"],["2026-11-05","Serve One Langweid","Padel 1 Doppel","----------fff.......XX....XXXXXXXXXXXXXXXXXXXXXX"],["2026-11-05","Serve One Langweid","Padel 2 Doppel","----------fff....XX..XXXXXXXXXXXXXX..XXXXXXXXX.."],["2026-11-05","Serve One Langweid","Padel 3 Einzel","----------fff.....XXXXXXXX..XX.XXXXXXXXXXX......"],["2026-11-05","TSG Lechhausen","Court 1","----------------....XX......XXXX.......XXX..----"],["2026-11-05","TSG Lechhausen","Court 2","----------------...................XXX......----"],["2026-11-05","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-06","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-06","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-06","Serve One Bergheim","Doppel Court","--------------.....XXXXXXXXXXXX?????????????----"],["2026-11-06","Serve One Bergheim","Single Court","--------------.......XXXXXXXXXX?????????????----"],["2026-11-06","Serve One Langweid","Padel 1 Doppel","----------fff...XXXXXXXXXXXXXXXXXXXXXXXXXXXXX..."],["2026-11-06","Serve One Langweid","Padel 2 Doppel","----------fff.....XXXXXXXXXXXXXXXX..XXXXXXXXXXXX"],["2026-11-06","Serve One Langweid","Padel 3 Einzel","----------fff....XXX.XXXXXXXXXXXXXXXXXXXXXXXXXXX"],["2026-11-06","TSG Lechhausen","Court 1","----------------................XX..........----"],["2026-11-06","TSG Lechhausen","Court 2","----------------..................XXXX......----"],["2026-11-06","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-07","DJK Lechhausen","Padel-Court 1","--------------........XXX.....XXXX............--"],["2026-11-07","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-07","Serve One Bergheim","Doppel Court","--------------.....XX???????????????????????----"],["2026-11-07","Serve One Bergheim","Single Court","--------------...XXXX???????????????????????----"],["2026-11-07","Serve One Langweid","Padel 1 Doppel","fffffffffffff....XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"],["2026-11-07","Serve One Langweid","Padel 2 Doppel","fffffffffffff....XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"],["2026-11-07","Serve One Langweid","Padel 3 Einzel","fffffffffffff.....XXXXXXXXXXXXXXXXXXXXXXXXXXXXX."],["2026-11-07","TSG Lechhausen","Court 1","----------------..XXX.......................----"],["2026-11-07","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-07","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-08","DJK Lechhausen","Padel-Court 1","--------------.......XXXX..XX..XXXXX..........--"],["2026-11-08","DJK Lechhausen","Padel-Court 2","--------------......XXXXXXXXX..XXX............--"],["2026-11-08","Serve One Bergheim","Doppel Court","--------------??????????????????????????????----"],["2026-11-08","Serve One Bergheim","Single Court","--------------??????????????????????????????----"],["2026-11-08","Serve One Langweid","Padel 1 Doppel","fffffffffffff...XXXXXXXXXXXXXXXXXXXXXXXXXXXXX..."],["2026-11-08","Serve One Langweid","Padel 2 Doppel","fffffffffffff.....XXXXXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-11-08","Serve One Langweid","Padel 3 Einzel","fffffffffffff..XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-11-08","TSG Lechhausen","Court 1","----------------..............XXXX..........----"],["2026-11-08","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-08","TSG Lechhausen","Court 3","----------------..........XX................----"],["2026-11-09","DJK Lechhausen","Padel-Court 1","--------------.......XXX..............XX......--"],["2026-11-09","DJK Lechhausen","Padel-Court 2","--------------......XX........................--"],["2026-11-09","Serve One Bergheim","Doppel Court","--------------....XXXX........X?????????????----"],["2026-11-09","Serve One Bergheim","Single Court","--------------.....XXXXXXXXX...?????????????----"],["2026-11-09","Serve One Langweid","Padel 1 Doppel","----------fff.....XXX..........XXXXXXXXXXXXXXX.."],["2026-11-09","Serve One Langweid","Padel 2 Doppel","----------fff................XXXXXXXXXXXXXXXXXXX"],["2026-11-09","Serve One Langweid","Padel 3 Einzel","----------fff...............XXXXXXXXXXXXXX..XX.."],["2026-11-09","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-09","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-09","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-10","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-10","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-10","Serve One Bergheim","Doppel Court","--------------...................XXXXXXXXXXX----"],["2026-11-10","Serve One Bergheim","Single Court","--------------....XX.XXXX.....XXXXXXXXXXXXXX----"],["2026-11-10","Serve One Langweid","Padel 1 Doppel","----------fff....................XXXXXXXXXXXXXXX"],["2026-11-10","Serve One Langweid","Padel 2 Doppel","----------fff..................XXXXXXXXXXXXXXXXX"],["2026-11-10","Serve One Langweid","Padel 3 Einzel","----------fff.......XX......XXX...XXXXXXXXXXXXXX"],["2026-11-10","TSG Lechhausen","Court 1","----------------.....................XXXX...----"],["2026-11-10","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-10","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-11","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-11","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-11","Serve One Bergheim","Doppel Court","--------------................X?????????????----"],["2026-11-11","Serve One Bergheim","Single Court","--------------....XXX..XXXX....?????????????----"],["2026-11-11","Serve One Langweid","Padel 1 Doppel","----------fff.....XX.XXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-11-11","Serve One Langweid","Padel 2 Doppel","----------fff.....XXXXXXXXXXXXX...XXXXXXXXXX...."],["2026-11-11","Serve One Langweid","Padel 3 Einzel","----------fff.....XXXXXXXXXXXX.XXXXXXXXXXXXX...."],["2026-11-11","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-11","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-11","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-12","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-12","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-12","Serve One Bergheim","Doppel Court","--------------.................?????????????----"],["2026-11-12","Serve One Bergheim","Single Court","--------------..XX........XX...?????????????----"],["2026-11-12","Serve One Langweid","Padel 1 Doppel","----------fff........XXXXX..XX.XXXXXXXXXXXXXXX.."],["2026-11-12","Serve One Langweid","Padel 2 Doppel","----------fff......XXXXXXXXXXX.XXXXXXXXXXXXXX..."],["2026-11-12","Serve One Langweid","Padel 3 Einzel","----------fff...XX..XXXXX.....XXXXXXXXXXXXXXXXXX"],["2026-11-12","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-12","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-12","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-13","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-13","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-13","Serve One Bergheim","Doppel Court","--------------...........XXXXXXX????????????----"],["2026-11-13","Serve One Bergheim","Single Court","--------------..XX...XXXXX..XXXX????????????----"],["2026-11-13","Serve One Langweid","Padel 1 Doppel","----------fff...XXXXXX..XXX...XXXXXXXXXXXXXXXXX."],["2026-11-13","Serve One Langweid","Padel 2 Doppel","----------fff.....XXX......XXXXXXXXXXXXXXXXXXXXX"],["2026-11-13","Serve One Langweid","Padel 3 Einzel","----------fff.....XXXXXXXX..XXXXXXXXXXXXXXXXXXXX"],["2026-11-13","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-13","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-13","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-14","DJK Lechhausen","Padel-Court 1","--------------........XXXX......XXXX...XXX....--"],["2026-11-14","DJK Lechhausen","Padel-Court 2","--------------....................XXX.........--"],["2026-11-14","Serve One Bergheim","Doppel Court","--------------..XXXXX???????????????????????----"],["2026-11-14","Serve One Bergheim","Single Court","--------------..XXXXX???????????????????????----"],["2026-11-14","Serve One Langweid","Padel 1 Doppel","fffffffffffff....XXXXXXXXXXXXXX?????????????????"],["2026-11-14","Serve One Langweid","Padel 2 Doppel","fffffffffffff....XXXXXXXXXXXXXX?????????????????"],["2026-11-14","Serve One Langweid","Padel 3 Einzel","fffffffffffff..XXXXXXXXXXXXXXXX?????????????????"],["2026-11-14","TSG Lechhausen","Court 1","----------------...........XXXXXXXX.........----"],["2026-11-14","TSG Lechhausen","Court 2","----------------............XX.XX...........----"],["2026-11-14","TSG Lechhausen","Court 3","----------------......XX.....XX.XX..........----"],["2026-11-15","DJK Lechhausen","Padel-Court 1","--------------..............XXX...............--"],["2026-11-15","DJK Lechhausen","Padel-Court 2","--------------..............XXXXXXXX..........--"],["2026-11-15","Serve One Bergheim","Doppel Court","--------------...XXXX???????????????????????----"],["2026-11-15","Serve One Bergheim","Single Court","--------------..XXXXX???????????????????????----"],["2026-11-15","Serve One Langweid","Padel 1 Doppel","fffffffffffffXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-11-15","Serve One Langweid","Padel 2 Doppel","fffffffffffff...XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.."],["2026-11-15","Serve One Langweid","Padel 3 Einzel","fffffffffffff...XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"],["2026-11-15","TSG Lechhausen","Court 1","----------------...............XXX..........----"],["2026-11-15","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-15","TSG Lechhausen","Court 3","----------------..............XXX...........----"],["2026-11-16","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-16","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-16","Serve One Bergheim","Doppel Court","--------------.....XXXX........?????????????----"],["2026-11-16","Serve One Bergheim","Single Court","--------------...XXXXXXXX......?????????????----"],["2026-11-16","Serve One Langweid","Padel 1 Doppel","----------fff...XXX....XXX..XX.XXXXXXXXXXXXX...."],["2026-11-16","Serve One Langweid","Padel 2 Doppel","----------fff......XXX.......XXXXXXXXXXXXXXXXXXX"],["2026-11-16","Serve One Langweid","Padel 3 Einzel","----------fff..........XXX.....XXXXXXXXXXXXX...."],["2026-11-16","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-16","TSG Lechhausen","Court 2","----------------.................XXX........----"],["2026-11-16","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-17","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-17","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-17","Serve One Bergheim","Doppel Court","--------------.......XXXX...XXXXXXXXXXXXXXXX----"],["2026-11-17","Serve One Bergheim","Single Court","--------------.....XX...XXXX..XXXXXXXXXXXXXX----"],["2026-11-17","Serve One Langweid","Padel 1 Doppel","----------fff........XXXX....XXXXXXXXXXXXXXXXXXX"],["2026-11-17","Serve One Langweid","Padel 2 Doppel","----------fff...XXX..XXXXXX....XXXXXXXXXXXXXX..."],["2026-11-17","Serve One Langweid","Padel 3 Einzel","----------fffXX....XX......XXXXXXXXXXXXXXXXXXX.."],["2026-11-17","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-17","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-17","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-18","DJK Lechhausen","Padel-Court 1","--------------.......................XXXX.....--"],["2026-11-18","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-18","Serve One Bergheim","Doppel Court","--------------fffffxxxxxxxxxxxxxxxxxxxxxxxxx----"],["2026-11-18","Serve One Bergheim","Single Court","--------------ffffffffffffffffffxxxxxxxxxxxx----"],["2026-11-18","Serve One Langweid","Padel 1 Doppel","----------ffffffffxxxfffffffffxxxxxxxxxxxxxxffff"],["2026-11-18","Serve One Langweid","Padel 2 Doppel","----------ffffffffffffxxxxffffxxxxxxxxxxxxxxxxff"],["2026-11-18","Serve One Langweid","Padel 3 Einzel","----------ffffffxxxxxxxxxxfffffffxxxxxxffxxfffff"],["2026-11-18","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-18","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-18","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-19","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-19","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-19","Serve One Bergheim","Doppel Court","--------------ffffffffffffffffffxxxxxxxxxxxx----"],["2026-11-19","Serve One Bergheim","Single Court","--------------ffffffffffffffffffffxxxxxxxxxx----"],["2026-11-19","Serve One Langweid","Padel 1 Doppel","----------ffffffxxxfffxxfffffffffxxxxxxxxxxxxxff"],["2026-11-19","Serve One Langweid","Padel 2 Doppel","----------ffffffxxfffffffffxxxxffxxxxxxxxxxxxxff"],["2026-11-19","Serve One Langweid","Padel 3 Einzel","----------ffffffffffxxxxxfffffffffxxxxxxxxffffff"],["2026-11-19","TSG Lechhausen","Court 1","----------------.........................XX.----"],["2026-11-19","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-19","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-20","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-20","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-20","Serve One Bergheim","Doppel Court","--------------ffffffffffffffffxxxxxxxxxxxxxx----"],["2026-11-20","Serve One Bergheim","Single Court","--------------ffffffffffffffffffxxxxxxxxxxxx----"],["2026-11-20","Serve One Langweid","Padel 1 Doppel","----------ffffffffffffffffxxxxxxxxxxxxxxxxxxxxxf"],["2026-11-20","Serve One Langweid","Padel 2 Doppel","----------ffffffffffffxxxxxxxxxxxxxxxxxxxxxxxfff"],["2026-11-20","Serve One Langweid","Padel 3 Einzel","----------ffffffffffxxffffxxxxxfffxxxxxxffffffff"],["2026-11-20","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-20","TSG Lechhausen","Court 2","----------------............................----"],["2026-11-20","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-21","DJK Lechhausen","Padel-Court 1","--------------................................--"],["2026-11-21","DJK Lechhausen","Padel-Court 2","--------------...............XXXX.............--"],["2026-11-21","Serve One Bergheim","Doppel Court","--------------ffxxxxxxxxxxxxxxxxxxxxxxxxxxff----"],["2026-11-21","Serve One Bergheim","Single Court","--------------ffffxxxxxxxxxxxxxxxxxxxxxxxxff----"],["2026-11-21","Serve One Langweid","Padel 1 Doppel","fffffffffffffffffxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"],["2026-11-21","Serve One Langweid","Padel 2 Doppel","fffffffffffffffxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxff"],["2026-11-21","Serve One Langweid","Padel 3 Einzel","ffffffffffffffffffxxxxxxxxxxxxxxxxxxxxxfffffffff"],["2026-11-21","TSG Lechhausen","Court 1","----------------............................----"],["2026-11-21","TSG Lechhausen","Court 2","----------------......XXX....XX.............----"],["2026-11-21","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-22","DJK Lechhausen","Padel-Court 1","--------------..................XXX...........--"],["2026-11-22","DJK Lechhausen","Padel-Court 2","--------------................................--"],["2026-11-22","TSG Lechhausen","Court 1","----------------......XXX...................----"],["2026-11-22","TSG Lechhausen","Court 2","----------------.....XX.....................----"],["2026-11-22","TSG Lechhausen","Court 3","----------------............................----"],["2026-11-23","DJK Lechhausen","Padel-Court 1","--------------................------------------"],["2026-11-23","DJK Lechhausen","Padel-Court 2","--------------................------------------"],["2026-11-23","TSG Lechhausen","Court 1","----------------..............------------------"],["2026-11-23","TSG Lechhausen","Court 2","----------------..............------------------"],["2026-11-23","TSG Lechhausen","Court 3","----------------..............------------------"]],"skippedMarkers":1}</script>
+  <script>"use strict";
+
+const data = JSON.parse(document.querySelector("#dashboard-data").textContent);
+const get = id => document.getElementById(id);
+const collator = new Intl.Collator("de", {numeric: true});
+const decimal = new Intl.NumberFormat("de-DE", {maximumFractionDigits: 1});
+const currency = new Intl.NumberFormat("de-DE", {style: "currency", currency: "EUR"});
+const dateFormat = new Intl.DateTimeFormat("de-DE", {dateStyle: "medium", timeZone: "UTC"});
+const shortDate = new Intl.DateTimeFormat("de-DE", {day: "2-digit", month: "2-digit", timeZone: "UTC"});
+const monthFormat = new Intl.DateTimeFormat("de-DE", {month: "short", year: "numeric", timeZone: "UTC"});
+const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+const dateKey = date => date.toISOString().slice(0, 10);
+const asDate = key => new Date(key + "T00:00:00Z");
+const shift = (key, days) => {
+  const date = asDate(key);
+  date.setUTCDate(date.getUTCDate() + days);
+  return dateKey(date);
+};
+const weekday = day => (asDate(day).getUTCDay() + 6) % 7;
+const formatDate = key => dateFormat.format(asDate(key));
+const timeLabel = minute => String(Math.floor(minute / 60)).padStart(2, "0") + ":" + String(minute % 60).padStart(2, "0");
+const percent = value => value === null ? "–" : decimal.format(value) + " %";
+const hours = blocks => decimal.format(blocks / 2);
+const safe = value => String(value).replace(/[&<>"']/g, char => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+})[char]);
+const pair = (club, court) => JSON.stringify([club, court]);
+const dateRange = (start, end) => {
+  const result = [];
+  for (let day = start; day <= end; day = shift(day, 1)) result.push(day);
+  return result;
+};
+const lastDay = data.latest?.slice(0, 10) ?? dateKey(new Date());
+const firstDay = data.records[0]?.[0] ?? lastDay;
+const types = [...new Set(Object.values(data.clubs))].sort(collator.compare);
+const clubs = Object.keys(data.clubs).sort(collator.compare);
+const courts = new Map();
+const records = data.records.map(([day, club, court, slots]) => {
+  const key = pair(club, court);
+  courts.set(key, {club, court, key});
+  return {day, club, court, key, slots};
+});
+const courtList = [...courts.values()].sort((a, b) => collator.compare(a.club, b.club) || collator.compare(a.court, b.court));
+const states = {
+  X: ["Belegt", "booked"], ".": ["Frei", "free"], "?": ["Mehrdeutig", "unclear"],
+  x: ["Belegt · Vorschau", "booked"], f: ["Frei · Vorschau", "free"], u: ["Mehrdeutig · Vorschau", "unclear"],
+  "-": ["Ohne Messung", "missing"]
+};
+let activePreset = "30";
+let payments = [];
+let importVersion = 0;
+let selectedDetail = null;
+let calendarPage = 0;
+const calendarPageSize = 31;
+const comparingCourts = () => get("compare-courts").checked;
+const selectedCourt = () => comparingCourts() ? "" : get("court").value;
+const courtLabel = ({club, court}) => safe(club + " · " + court);
+
+function summary() {
+  return {valid: 0, booked: 0, preview: 0, unclear: 0, observed: 0, days: new Set()};
+}
+
+function count(target, state, day) {
+  target.observed++;
+  target.days.add(day);
+  if (state === "?" || state === "u") {
+    target.unclear++;
+    if (!get("include-unknown").checked) return;
+  }
+  target.valid++;
+  if ("Xx?u".includes(state)) target.booked++;
+  if ("xfu".includes(state)) target.preview++;
+}
+
+function ratio(s) {
+  return s?.valid ? s.booked * 100 / s.valid : null;
+}
+
+function change(current, previous) {
+  const now = ratio(current), before = ratio(previous);
+  if (now === null || before === null) return "–";
+  const difference = Math.round((now - before) * 10) / 10;
+  return (difference > 0 ? "+" : "") + decimal.format(difference) + " Pp.";
+}
+
+function clubInScope(club) {
+  const selected = selectedCourt();
+  return (!get("type").value || data.clubs[club] === get("type").value)
+    && (!get("club").value || club === get("club").value)
+    && (!selected || club === courts.get(selected)?.club);
+}
+
+function inScope({club, key}) {
+  const selected = selectedCourt();
+  return clubInScope(club) && (!selected || key === selected);
+}
+
+function accepted(state) {
+  return state !== "-" && (!get("same-day").checked || !"xfu".includes(state));
+}
+
+function bucketFor(day) {
+  if (get("bucket").value === "week") return shift(day, -weekday(day));
+  if (get("bucket").value === "month") return day.slice(0, 7) + "-01";
+  return day;
+}
+
+function bucketLabel(day) {
+  if (get("bucket").value === "month") return monthFormat.format(asDate(day));
+  if (get("bucket").value !== "week") return shortDate.format(asDate(day));
+  const thursday = asDate(shift(day, 3));
+  const year = thursday.getUTCFullYear();
+  const week = Math.ceil((thursday - Date.UTC(year, 0, 1) + 86400000) / 604800000);
+  return "KW " + week + " · " + year;
+}
+
+function rowsFor(start, end, detailed) {
+  const totals = summary();
+  const groups = new Map();
+  const trend = new Map();
+  const calendar = new Map();
+  const grid = Array.from({length: 7}, () => Array.from({length: 24}, summary));
+  const courtTrend = new Map();
+  const courtHours = new Map();
+  const compare = detailed && comparingCourts();
+  const heatmapDay = get("heatmap-day").value;
+  function tally(map, key, state, day) {
+    if (!map.has(key)) map.set(key, summary());
+    count(map.get(key), state, day);
+  }
+  for (const record of records) {
+    const {day, club, key, slots} = record;
+    if (day < start || day > end || !inScope(record)) continue;
+    const bucket = detailed ? bucketFor(day) : null;
+    const dayOfWeek = detailed ? weekday(day) : null;
+    const calendarKey = detailed ? JSON.stringify([key, day]) : null;
+    const trendKey = compare ? JSON.stringify([key, bucket]) : null;
+    const matchesHeatmap = compare && (heatmapDay === "" || Number(heatmapDay) === dayOfWeek);
+    for (const [index, state] of [...slots].entries()) {
+      if (!accepted(state)) continue;
+      count(totals, state, day);
+      tally(groups, "type:" + data.clubs[club], state, day);
+      tally(groups, "club:" + club, state, day);
+      tally(groups, "court:" + key, state, day);
+      if (detailed) {
+        const hour = Math.floor(index / 2);
+        tally(trend, bucket, state, day);
+        tally(calendar, calendarKey, state, day);
+        count(grid[dayOfWeek][hour], state, day);
+        if (compare) tally(courtTrend, trendKey, state, day);
+        if (matchesHeatmap) tally(courtHours, JSON.stringify([key, hour]), state, day);
+      }
+    }
+  }
+  return {totals, groups, trend, grid, calendar, courtTrend, courtHours};
+}
+
+function options(element, items) {
+  const old = element.value;
+  element.replaceChildren(element.options[0], ...items.map(([key, name]) => new Option(name, key)));
+  if (items.some(([key]) => old === key)) element.value = old;
+}
+
+function refreshFilters() {
+  options(get("club"), clubs.filter(club => !get("type").value || data.clubs[club] === get("type").value)
+    .map(club => [club, club]));
+  options(get("court"), courtList.filter(({club}) =>
+    (!get("type").value || data.clubs[club] === get("type").value)
+    && (!get("club").value || club === get("club").value))
+    .map(({key, club, court}) => [key, get("club").value ? court : club + " · " + court]));
+}
+
+function compareRows() {
+  const places = courtList.filter(inScope).map(({club, court, key}) => ["Platz", club + " · " + court, "court:" + key]);
+  if (comparingCourts()) return places;
+  return [
+    ...types.filter(type => clubs.some(club => data.clubs[club] === type && clubInScope(club)))
+      .map(type => ["Typ", type, "type:" + type]),
+    ...clubs.filter(clubInScope)
+      .map(club => ["Standort", club, "club:" + club]),
+    ...places
+  ];
+}
+
+function table(headers, rows, attributes = "") {
+  return '<table ' + attributes + '><thead><tr>' + headers.map(header => '<th scope="col">' + header + '</th>').join("")
+    + '</tr></thead><tbody>' + rows.join("") + '</tbody></table>';
+}
+
+function tr(label, cells) {
+  return '<tr><th scope="row">' + label + '</th>' + cells.map(cell => '<td>' + cell + '</td>').join("") + '</tr>';
+}
+
+function tile(label, value, note) {
+  return '<article><h2>' + label + '</h2><strong>' + value + '</strong><p>' + note + '</p></article>';
+}
+
+function color(value) {
+  return value === null ? "missing" : "heat-" + Math.min(4, Math.floor(value / 20));
+}
+
+function heatCell(group) {
+  const value = ratio(group);
+  return '<td class="' + color(value) + '" title="' + (group?.valid ?? 0) + ' auswertbare Blöcke">'
+    + percent(value) + '</td>';
+}
+
+function matrixRow(label, cells) {
+  return '<tr><th scope="row">' + label + '</th>' + cells.join("") + '</tr>';
+}
+
+function renderCourtMatrix(id, columns, labels, summaries) {
+  const places = courtList.filter(inScope);
+  get(id).innerHTML = places.length ? table(["Platz", ...labels], places.map(place =>
+    matrixRow(courtLabel(place), columns.map(column => heatCell(summaries.get(JSON.stringify([place.key, column])))))),
+  'class="matrix court-matrix"') : "<p>Keine Plätze mit erfassten Kalenderdaten für diese Standortauswahl.</p>";
+}
+
+function renderTrend(current, days) {
+  const buckets = [...new Set(days.map(bucketFor))];
+  const label = key => bucketLabel(key) + (get("bucket").value === "day"
+    ? '<span class="bar-weekday">' + weekdays[weekday(key)] + '</span>' : "");
+  if (comparingCourts()) {
+    renderCourtMatrix("trend", buckets, buckets.map(label), current.courtTrend);
+    return;
+  }
+  get("trend").innerHTML = '<div class="trend" aria-label="Auslastung je Zeitraum">'
+    + buckets.map(key => {
+      const group = current.trend.get(key);
+      const value = ratio(group);
+      const title = group ? hours(group.booked) + " / " + hours(group.valid) + " h" : "Ohne Messung";
+      return '<div class="bar-column" title="' + title + '"><b>' + percent(value) + '</b><div class="bar-track '
+        + (value === null ? "missing" : "") + '"><div class="bar" style="height:' + (value ?? 0)
+        + '%"></div></div><span>' + label(key) + '</span></div>';
+    }).join("") + '</div>';
+}
+
+function renderComparison(current, previous) {
+  const compare = comparingCourts();
+  const headers = ["Auslastung", "Vorzeitraum", "Differenz", "Belegt (h)", "Auswertbar (h)", "Auswertbar zuvor (h)", "Messtage"];
+  if (compare) headers.push("Vorschau-Blöcke", "Mehrdeutige Blöcke");
+  get("comparison").innerHTML = table([...(compare ? ["Platz"] : ["Ebene", "Typ / Standort / Platz"]), ...headers],
+    compareRows().map(([level, name, key]) => {
+      const a = current.groups.get(key) ?? summary();
+      const b = previous.groups.get(key);
+      const cells = ['<b class="badge ' + color(ratio(a)) + '">' + percent(ratio(a)) + '</b>',
+        percent(ratio(b)), change(a, b), a.valid ? hours(a.booked) : "–", hours(a.valid), hours(b?.valid ?? 0), a.days.size];
+      return compare ? tr(safe(name), [...cells, a.preview, a.unclear]) : tr(level, [safe(name), ...cells]);
+    }));
+}
+
+function renderHeatmap(current) {
+  const columns = Array.from({length: 24}, (_, hour) => hour);
+  const labels = columns.map(hour => timeLabel(hour * 60));
+  if (comparingCourts()) {
+    renderCourtMatrix("heatmap", columns, labels, current.courtHours);
+    return;
+  }
+  get("heatmap").innerHTML = table(["Tag", ...labels],
+    current.grid.map((row, day) => matrixRow(weekdays[day], row.map(heatCell))), 'class="matrix"');
+}
+
+function renderCalendar(current, days) {
+  const start = calendarPage * calendarPageSize;
+  const shown = [...days].reverse().slice(start, start + calendarPageSize);
+  get("calendar-nav").hidden = days.length <= calendarPageSize;
+  get("calendar-newer").disabled = calendarPage === 0;
+  get("calendar-older").disabled = start + calendarPageSize >= days.length;
+  get("calendar-range").textContent = formatDate(shown.at(-1)) + " bis " + formatDate(shown[0]);
+  const included = courtList.filter(inScope);
+  const rows = included.map(({key, club, court}, i) => '<tr><th scope="row">' + safe(club + " · " + court) + '</th>'
+    + shown.map(day => {
+      const group = current.calendar.get(JSON.stringify([key, day]));
+      const value = ratio(group);
+      return group ? '<td><button type="button" data-row="' + i + '" data-day="' + day + '" class="' + color(value)
+        + '" title="' + group.valid + ' auswertbare und ' + group.unclear + ' mehrdeutige Blöcke">'
+        + (group.valid ? percent(value) : "?") + '</button></td>' : '<td class="missing">–</td>';
+    }).join("") + '</tr>');
+  get("calendar").innerHTML = rows.length ? table(["Platz", ...shown.map(day => shortDate.format(asDate(day)))],
+    rows, 'class="matrix calendar"') : "<p>Keine Plätze für diese Filter.</p>";
+  get("calendar").onclick = event => {
+    const button = event.target.closest("button[data-row]");
+    if (!button) return;
+    selectedDetail = {key: included[Number(button.dataset.row)].key, day: button.dataset.day};
+    renderDetail(current);
+    get("detail").scrollIntoView({block: "nearest"});
+  };
+  renderDetail(current);
+}
+
+function renderDetail(current) {
+  const detail = get("detail");
+  if (comparingCourts() && selectedDetail) {
+    renderSlotComparison(detail, selectedDetail.day, current);
+    return;
+  }
+  const record = selectedDetail && records.find(({key, day}) => key === selectedDetail.key && day === selectedDetail.day);
+  detail.hidden = !record || !current.calendar.has(JSON.stringify([record.key, record.day]));
+  if (detail.hidden) {
+    detail.replaceChildren();
+    return;
+  }
+  detail.innerHTML = '<h3>' + safe(record.club + " · " + record.court) + ' · ' + formatDate(record.day) + '</h3>'
+    + '<div class="slots">' + [...record.slots].map((state, i) => {
+      const filtered = state !== "-" && !accepted(state);
+      const [label, style] = filtered ? ["Vorschau ausgeblendet", "missing"] : states[state];
+      return '<div class="' + style + '"><b>' + timeLabel(i * 30) + '</b><span>' + label + '</span></div>';
+    }).join("") + '</div>';
+}
+
+function renderSlotComparison(detail, day, current) {
+  const byCourt = new Map(records.filter(record => record.day === day && inScope(record))
+    .map(record => [record.key, record.slots]));
+  const places = courtList.filter(inScope);
+  detail.hidden = !places.some(({key}) => current.calendar.has(JSON.stringify([key, day])));
+  if (detail.hidden) {
+    detail.replaceChildren();
+    return;
+  }
+  const slots = Array.from({length: 48}, (_, i) => i);
+  const symbols = {booked: "B", free: "F", unclear: "?", missing: "–"};
+  const rows = places.map(place => matrixRow(courtLabel(place), slots.map(index => {
+    const state = byCourt.get(place.key)?.[index] ?? "-";
+    const [label, style] = state !== "-" && !accepted(state) ? ["Vorschau ausgeblendet", "missing"] : states[state];
+    return '<td class="' + style + '" title="' + label + '"><abbr aria-label="' + label + '">' + symbols[style] + '</abbr></td>';
+  })));
+  detail.innerHTML = '<h3>Halbstunden am ' + formatDate(day) + '</h3>'
+    + '<p>B = belegt · F = frei · ? = mehrdeutig · – = kein Wert</p><div class="scroll">'
+    + table(["Platz", ...slots.map(index => timeLabel(index * 30))], rows, 'class="matrix court-matrix"') + '</div>';
+}
+
+function renderCoverage(current, days) {
+  const inView = clubs.filter(clubInScope);
+  const start = days[0], end = days.at(-1);
+  const byClub = new Map(inView.map(club => [club, new Map()]));
+  for (const record of records) {
+    if (record.day < start || record.day > end || !inScope(record)) continue;
+    const perDay = byClub.get(record.club);
+    if (!perDay.has(record.day)) perDay.set(record.day, {sameDay: 0, preview: 0, unclear: 0, valid: 0});
+    const counts = perDay.get(record.day);
+    for (const state of record.slots) {
+      if (state === "-") continue;
+      counts["xfu".includes(state) ? "preview" : "sameDay"]++;
+      counts["?u".includes(state) ? "unclear" : "valid"]++;
+    }
+  }
+  get("coverage-period").textContent = formatDate(start) + " bis " + formatDate(end)
+    + ". Ein erfasster Tag hat mindestens einen Messblock. Die Tabelle zählt auch Vorschauen, die in der Auslastung ausgeblendet sind.";
+  const cutoff = get("coverage-cutoff");
+  cutoff.hidden = !data.latest || end !== lastDay;
+  cutoff.textContent = cutoff.hidden ? "" : "Der letzte Tag ist nur bis zum Datenstand um " + data.latest.slice(11)
+    + " Uhr berücksichtigt. Im Platzkalender stehen die erfassten Halbstunden.";
+  get("coverage").innerHTML = table(["Standort", "Vom Spieltag", "Nur Vorschau",
+    "Ohne Messung", "Letzte Erfassung"], inView.map(club => {
+    const dates = byClub.get(club);
+    const opening = data.openingDates[club];
+    const eligible = days.filter(day => !opening || day >= opening);
+    const sameDay = eligible.filter(day => dates.get(day)?.sameDay);
+    const previewOnly = eligible.filter(day => dates.has(day) && !dates.get(day).sameDay);
+    const missing = eligible.filter(day => !dates.has(day));
+    const ambiguousDays = eligible.filter(day => dates.get(day)?.unclear && !dates.get(day).valid);
+    const active = current.groups.get("club:" + club);
+    const run = data.runs[club];
+    const flags = eligible.map(day => dates.get(day)).filter(Boolean);
+    const previewBlocks = flags.reduce((sum, counts) => sum + counts.preview, 0);
+    const unclearBlocks = flags.reduce((sum, counts) => sum + counts.unclear, 0);
+    const details = '<details><summary>Spieltage und Blöcke</summary><dl>'
+      + '<dt>Vom Spieltag</dt><dd>' + describeDays(sameDay) + '</dd>'
+      + '<dt>Nur Vorschau</dt><dd>' + describeDays(previewOnly) + '</dd>'
+      + '<dt>Ohne Messung</dt><dd>' + describeDays(missing) + '</dd>'
+      + '<dt>Ausschließlich mehrdeutig</dt><dd>' + describeDays(ambiguousDays) + '</dd>'
+      + '<dt>Halbstundenblöcke</dt><dd>' + previewBlocks + ' aus Vorschau, ' + unclearBlocks
+      + ' mehrdeutig, ' + (active?.valid ?? 0) + ' in der aktuellen Auslastungsquote</dd></dl></details>';
+    const label = safe(club) + ' <span class="coverage-type">' + safe(data.clubs[club]) + '</span>' + details;
+    const beforeOpening = opening && opening > start ? '<span class="coverage-type">Eröffnung am ' + formatDate(opening) + '</span>' : "";
+    return tr(label, [sameDay.length + " Tage", previewOnly.length + " Tage",
+      (eligible.length ? missing.length + " Tage" : "–") + beforeOpening,
+      run ? formatDate(run.slice(0, 10)) + " · " + run.slice(11) : "Keine Erfassung"]);
+  }));
+  const imported = payments.filter(row => row.day >= start && row.day <= end && inScope(row)).length;
+  get("payment-coverage").textContent = (imported ? "Zahlungen für " + imported + " Platz-Tage lokal importiert."
+    : "Für diese Auswahl liegen keine Zahlungsdaten vor.") + " Bearbeitbare Listenpreise stehen für Serve One bereit.";
+}
+
+function describeDays(days) {
+  const ranges = [];
+  for (const day of days) {
+    const last = ranges.at(-1);
+    if (last && day === shift(last[1], 1)) last[1] = day;
+    else ranges.push([day, day]);
+  }
+  return ranges.map(([start, end]) => start === end ? formatDate(start) : formatDate(start) + " bis " + formatDate(end)).join(", ") || "Keine";
+}
+
+function renderRates() {
+  const rates = [
+    ["serve-double", "Serve One · Doppel", 38], ["serve-single", "Serve One · Einzel", 24],
+    ["langweid", "Serve One Langweid · Ersatzwert", ""], ["bergheim", "Serve One Bergheim · Ersatzwert", ""],
+    ["djk", "DJK Lechhausen", ""], ["tsg", "TSG Lechhausen", ""], ["4030", "4030 Padel Club Augsburg", ""]
+  ];
+  get("rates").innerHTML = rates.map(([id, label, value]) =>
+    '<label>' + label + ' (€/h)<input id="rate-' + id + '" type="number" min="0" step="0.01" value="' + value + '"></label>'
+  ).join("");
+}
+
+function rateFor({club, court}) {
+  let id = {"DJK Lechhausen": "djk", "TSG Lechhausen": "tsg", "4030 Padel Club Augsburg": "4030"}[club];
+  if (club === "Serve One Langweid" || club === "Serve One Bergheim") {
+    if (/einzel|single/i.test(court)) id = "serve-single";
+    else if (/doppel|double/i.test(court)) id = "serve-double";
+    else id = club.endsWith("Langweid") ? "langweid" : "bergheim";
+  }
+  const input = id && get("rate-" + id);
+  return input && input.validity.valid && Number.isFinite(input.valueAsNumber) ? input.valueAsNumber : null;
+}
+
+function renderFinance(current, start, end) {
+  const compare = comparingCourts();
+  const ledger = payments.filter(row => row.day >= start && row.day <= end && inScope(row));
+  const eligibleClubs = clubs.filter(clubInScope);
+  const scenarios = courtList.filter(inScope).map(court => {
+    const counts = current.groups.get("court:" + court.key);
+    return {...court, rate: rateFor(court), blocks: counts?.booked ?? 0, valid: counts?.valid ?? 0};
+  });
+  const items = compare ? scenarios.map(({club, court, key, rate}) => ({title: club + " · " + court, key, rate}))
+    : [{title: "Gesamt"}, ...eligibleClubs.map(club => ({title: club, club}))];
+  const headers = [compare ? "Platz" : "Standort", "Importierte Einnahmen", "Bezahlte Stunden", "Effektiver Preis pro Stunde", "Platz-Tage mit Import"];
+  if (compare) headers.push("Hinterlegter Tarif pro Stunde");
+  headers.push("Szenario bei hinterlegtem Tarif", "Belegte Stunden mit Tarif");
+  get("finance").innerHTML = items.length ? table(headers, items.map(({club, title, key, rate}) => {
+    const matches = row => (!club || row.club === club) && (!key || row.key === key);
+    const paid = ledger.filter(matches);
+    const cents = paid.reduce((sum, row) => sum + row.cents, 0);
+    const paidHours = paid.reduce((sum, row) => sum + row.hours, 0);
+    const scoped = scenarios.filter(matches);
+    const priced = scoped.filter(row => row.rate !== null && row.valid);
+    const estimate = priced.reduce((sum, row) => sum + row.blocks * row.rate / 2, 0);
+    const pricedHours = priced.reduce((sum, row) => sum + row.blocks, 0);
+    const total = scoped.reduce((sum, row) => sum + row.blocks, 0);
+    const cells = [paid.length ? currency.format(cents / 100) : "–",
+      paid.length ? decimal.format(paidHours) : "–", paidHours ? currency.format(cents / 100 / paidHours) : "–",
+      paid.length || "–"];
+    if (compare) cells.push(rate === null ? "–" : currency.format(rate));
+    return tr(safe(title), [...cells, priced.length ? currency.format(estimate) : "–", hours(pricedHours) + " / " + hours(total)]);
+  })) : "<p>Keine Plätze mit erfassten Kalenderdaten für diese Standortauswahl.</p>";
+}
+
+function parseCsv(text, separator) {
+  const rows = [];
+  let row = [], field = "", quoted = false, closed = false;
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    if (quoted) {
+      if (char !== '"') field += char;
+      else if (text[i + 1] === '"') {
+        field += char;
+        i++;
+      } else {
+        quoted = false;
+        closed = true;
+      }
+      continue;
+    }
+    if (char === separator || char === "\n" || char === "\r") {
+      row.push(field.trim());
+      field = "";
+      closed = false;
+      if (char !== separator) {
+        if (row.some(Boolean)) rows.push(row);
+        row = [];
+        if (char === "\r" && text[i + 1] === "\n") i++;
+      }
+    } else if (char === '"' && !field && !closed) quoted = true;
+    else if (closed || char === '"') throw new Error("Ungültige Anführungszeichen in der CSV.");
+    else field += char;
+  }
+  if (quoted) throw new Error("Ein CSV-Feld wurde nicht geschlossen.");
+  row.push(field.trim());
+  if (row.some(Boolean)) rows.push(row);
+  return rows;
+}
+
+function parsePayments(text) {
+  text = text.replace(/^\uFEFF/, "").trim();
+  const separator = text.split(/\r?\n/, 1)[0].includes(";") ? ";" : ",";
+  const [header = [], ...rows] = parseCsv(text, separator);
+  const columns = ["date", "club", "court", "revenue_eur", "paid_hours"];
+  const indices = columns.map(column => header.indexOf(column));
+  if (indices.includes(-1) || new Set(header).size !== header.length) {
+    throw new Error("Spalten erforderlich: " + columns.join(", ") + ".");
+  }
+  if (!rows.length) throw new Error("Die Datei enthält keine Zahlungszeilen.");
+  const seen = new Set();
+  return rows.map((row, i) => {
+    const [day, club, court, amount, paidHours] = indices.map(index => row[index] ?? "");
+    const key = pair(club, court);
+    const unique = JSON.stringify([day, club, court]);
+    const parsed = asDate(day);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(day) || !Number.isFinite(+parsed) || dateKey(parsed) !== day
+        || !courts.has(key) || row.length !== header.length || !/^-?\d+([.,]\d{1,2})?$/.test(amount)
+        || !/^\d+([.,]\d+)?$/.test(paidHours) || seen.has(unique)) {
+      throw new Error("Datensatz " + (i + 2) + " ist ungültig oder für Platz und Spieltag doppelt vorhanden.");
+    }
+    const cents = Math.round(Number(amount.replace(",", ".")) * 100);
+    const paid = Number(paidHours.replace(",", "."));
+    if (!Number.isSafeInteger(cents) || !Number.isFinite(paid) || paid > 24) {
+      throw new Error("Ungültiger Betrag oder mehr als 24 bezahlte Stunden in Datensatz " + (i + 2) + ".");
+    }
+    seen.add(unique);
+    return {day, club, key, cents, hours: paid};
+  });
+}
+
+let viewerDownloadsPromise = null;
+
+// Im claude.ai-Artefakt laufen Downloads \u00FCber die Viewer-API, sonst \u00FCber einen Blob-Link.
+function viewerDownloads() {
+  if (!viewerDownloadsPromise && typeof window.claude?.use === "function") {
+    viewerDownloadsPromise = window.claude.use("downloads").catch(() => null);
+  }
+  return viewerDownloadsPromise;
+}
+
+async function download(name, rows, status) {
+  const encode = cell => {
+    const value = String(cell);
+    return '"' + value.replaceAll('"', '""') + '"';
+  };
+  const file = new Blob(["\uFEFF", rows.map(row => row.map(encode).join(";")).join("\r\n") + "\r\n"],
+    {type: "text/csv;charset=utf-8"});
+  const report = text => {
+    status.textContent = text;
+    status.hidden = !text;
+  };
+  report("");
+  const pending = viewerDownloads();
+  if (pending) {
+    const downloads = await pending;
+    if (!downloads) {
+      report("Downloads sind in dieser Ansicht nicht verf\u00FCgbar.");
+      return;
+    }
+    try {
+      await downloads.save({filename: name, data: file});
+    } catch (error) {
+      if (error?.code === "declined") return;
+      report(error?.code === "rate_limited" ? "Ein Download wartet noch auf Best\u00E4tigung."
+        : "Der Download ist fehlgeschlagen.");
+    }
+    return;
+  }
+  const url = URL.createObjectURL(file);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = name;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function applyPreset(value) {
+  activePreset = value;
+  calendarPage = 0;
+  selectedDetail = null;
+  get("from").value = value === "all" ? firstDay : shift(lastDay, 1 - Number(value));
+  get("to").value = lastDay;
+  get("bucket").value = value === "90" ? "week" : value === "all" ? "month" : "day";
+}
+
+function calendarBounds() {
+  const start = get("from").value, end = get("to").value;
+  if (!start || !end || start < get("from").min || end < start || end > lastDay) return null;
+  const length = Math.round((asDate(end) - asDate(start)) / 86400000) + 1;
+  return {start, end, length};
+}
+
+function render() {
+  const compare = comparingCourts();
+  get("court").disabled = compare;
+  get("heatmap-day-label").hidden = !compare;
+  get("calendar-hint").textContent = compare ? "Ein Tageswert öffnet die Halbstunden aller Plätze für diesen Spieltag."
+    : "Ein Tageswert öffnet die zugehörigen Halbstundenblöcke.";
+  document.querySelectorAll("[data-days]").forEach(button =>
+    button.setAttribute("aria-pressed", button.dataset.days === activePreset));
+  const bounds = calendarBounds();
+  get("filter-error").hidden = Boolean(bounds);
+  get("results").hidden = !bounds;
+  get("export").disabled = !bounds;
+  if (!bounds) {
+    get("filter-error").textContent = "Wähle einen gültigen Zeitraum bis zum Datenstand.";
+    get("coverage").replaceChildren();
+    return;
+  }
+  const {start, end, length} = bounds;
+  const days = dateRange(start, end);
+  const current = rowsFor(start, end, true);
+  const previous = rowsFor(shift(start, -length), shift(start, -1), false);
+  const totals = current.totals;
+  const metric = type => current.groups.get("type:" + type) ?? summary();
+  get("kpis").innerHTML = tile("Auslastung gesamt", percent(ratio(totals)), "Vorzeitraum " + percent(ratio(previous.totals))
+    + " · " + change(totals, previous.totals) + " · " + previous.totals.days.size + " / " + days.length + " Messtage")
+    + tile("Indoor", percent(ratio(metric("Indoor"))), hours(metric("Indoor").valid) + " auswertbare Stunden")
+    + tile("Outdoor", percent(ratio(metric("Outdoor"))), hours(metric("Outdoor").valid) + " auswertbare Stunden")
+    + tile("Belegte Platzstunden", totals.valid ? hours(totals.booked) + " h" : "–", "Von " + hours(totals.valid) + " auswertbaren Stunden")
+    + tile("Messtage", totals.days.size + " / " + days.length, totals.preview + " Blöcke aus Vorschau"
+      + " · " + totals.unclear + " mehrdeutig");
+  renderTrend(current, days);
+  renderComparison(current, previous);
+  renderHeatmap(current);
+  renderCalendar(current, days);
+  renderFinance(current, start, end);
+  renderCoverage(current, days);
+  get("export").onclick = () => {
+    const rows = [["Ebene", "Typ / Standort / Platz", "Von", "Bis", "Auslastung (%)", "Auslastung Vorzeitraum (%)",
+      "Belegte Stunden", "Auswertbare Stunden", "Messtage", "Vorschau-Blöcke", "Mehrdeutige Blöcke"]];
+    const csvRate = item => ratio(item) === null ? "" : decimal.format(ratio(item));
+    for (const [level, name, key] of compareRows()) {
+      const s = current.groups.get(key) ?? summary();
+      rows.push([level, name, start, end, csvRate(s), csvRate(previous.groups.get(key)),
+        s.valid ? hours(s.booked) : "", hours(s.valid), s.days.size, s.preview, s.unclear]);
+    }
+    download("padel-auslastung-" + end + ".csv", rows, get("export-status"));
+  };
+}
+
+get("data-stand").textContent = data.latest ? "Datenstand " + formatDate(lastDay) + " · " + data.latest.slice(11) + " Uhr"
+  : "Keine Messungen vorhanden";
+get("source-notes").textContent = (data.latest ? "Quellen: Playtomic und eBuSy. Ortszeit Europe/Berlin." : "")
+  + (data.skippedMarkers ? " Übersprungene Git-Konfliktmarkierungen in der CSV: " + data.skippedMarkers + "." : "");
+get("to").max = lastDay;
+get("from").max = lastDay;
+get("from").min = [firstDay, shift(lastDay, -89)].sort()[0];
+get("to").min = get("from").min;
+options(get("type"), types.map(type => [type, type]));
+options(get("heatmap-day"), weekdays.map((name, day) => [String(day), name]));
+refreshFilters();
+renderRates();
+applyPreset("30");
+render();
+
+document.querySelectorAll("[data-days]").forEach(button => button.addEventListener("click", () => {
+  applyPreset(button.dataset.days);
+  render();
+}));
+for (const id of ["from", "to", "type", "club", "court", "bucket", "same-day", "include-unknown", "compare-courts", "heatmap-day"]) {
+  get(id).addEventListener("change", () => {
+    if (id === "type" || id === "club") refreshFilters();
+    if (id === "from" || id === "to") {
+      activePreset = "";
+      calendarPage = 0;
+      selectedDetail = null;
+    }
+    render();
+  });
+}
+for (const [id, step] of [["calendar-newer", -1], ["calendar-older", 1]]) {
+  get(id).addEventListener("click", () => {
+    calendarPage += step;
+    selectedDetail = null;
+    render();
+  });
+}
+get("rates").addEventListener("input", () => {
+  const bounds = calendarBounds();
+  if (bounds) renderFinance(rowsFor(bounds.start, bounds.end, false), bounds.start, bounds.end);
+});
+get("payments").addEventListener("change", async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  const version = ++importVersion;
+  try {
+    const imported = parsePayments(await file.text());
+    if (version !== importVersion) return;
+    payments = imported;
+    get("payment-status").textContent = payments.length + " Platz-Tage geladen aus " + file.name + ".";
+    get("reset-payments").hidden = false;
+    render();
+  } catch (error) {
+    if (version !== importVersion) return;
+    get("payment-status").textContent = "Import fehlgeschlagen. " + error.message
+      + (payments.length ? " Der bisherige Import bleibt aktiv." : "");
+  } finally {
+    if (version === importVersion) event.target.value = "";
+  }
+});
+get("reset-payments").addEventListener("click", () => {
+  importVersion++;
+  payments = [];
+  get("payments").value = "";
+  get("reset-payments").hidden = true;
+  get("payment-status").textContent = "Die Auslastungsdaten enthalten keine Zahlungen.";
+  render();
+});
+get("payment-template").addEventListener("click", () =>
+  download("padel-zahlungen-vorlage.csv", [["date", "club", "court", "revenue_eur", "paid_hours"]],
+    get("template-status")));
+viewerDownloads()?.then(downloads => {
+  if (!downloads) for (const id of ["export", "payment-template"]) get(id).hidden = true;
+});
+</script>
+</body>
+</html>

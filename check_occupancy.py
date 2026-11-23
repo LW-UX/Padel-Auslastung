@@ -24,6 +24,12 @@ DAYS_AHEAD = 4
 BLOCK_MIN = 30
 CSV_PATH = Path(__file__).parent / "data" / "occupancy.csv"
 UA = {"User-Agent": "Mozilla/5.0 (occupancy-tracker)"}
+PLAYTOMIC_AVAILABILITY_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:145.0) Gecko/20100101 Firefox/145.0",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-origin",
+}
 
 CLUBS = [
     {"source": "playtomic", "slug": "serve-one-padel-langweid", "name": "Serve One Langweid"},
@@ -103,7 +109,8 @@ def free_intervals(tenant_id, day):
     """Freie Intervalle je Court als lokale datetimes, nur Slots die am Zieltag beginnen."""
     data = json.loads(get(
         "https://playtomic.com/api/clubs/availability"
-        f"?tenant_id={tenant_id}&date={day.isoformat()}&sport_id=PADEL"
+        f"?tenant_id={tenant_id}&date={day.isoformat()}&sport_id=PADEL",
+        PLAYTOMIC_AVAILABILITY_HEADERS,
     ))
     free = {}
     for entry in data:

@@ -4,6 +4,7 @@ Erfasst dreimal täglich (6, 10, 15 Uhr) die Platz-Auslastung dieser Clubs:
 
 - Serve One Padel Langweid
 - Serve One Padel Bergheim
+- 4030 Padel Club Augsburg, 5 Doppel- und 2 Einzelplätze (Playtomic, für Spieltage ab 25.11.2026)
 - BIMA Athletics Bobingen (noch nicht eröffnet, in `CLUBS` auskommentiert)
 - DJK Lechhausen, 2 Außenplätze (eBuSy)
 - TSG Lechhausen, 3 Außenplätze (eBuSy über Padelstars)
@@ -20,7 +21,7 @@ Die Ergebnisse werden an [data/occupancy.csv](data/occupancy.csv) angehängt, ei
 - `morgens_pct` / `nachmittags_pct` / `abends_pct`: vor 12 Uhr, 12–17 Uhr, ab 17 Uhr
 - `pattern`: ein Zeichen pro 30 Minuten ab `from`, `X` = belegt, `.` = frei
 
-**Playtomic** (Serve One, BIMA): Ein Block zählt als frei, wenn ein buchbarer Slot ihn abdeckt. Kurze Lücken, die man nicht mehr buchen kann, zählen deshalb als belegt. Datenquelle ist `https://playtomic.com/api/clubs/availability`, also dieselbe Schnittstelle, die auch die Club-Seite nutzt. Plätze und Öffnungszeiten liest das Skript bei jedem Lauf von der Club-Seite.
+**Playtomic** (Serve One, 4030, BIMA): Ein Block zählt als frei, wenn ein buchbarer Slot ihn abdeckt. Kurze Lücken, die man nicht mehr buchen kann, zählen deshalb als belegt. Datenquelle ist `https://playtomic.com/api/clubs/availability`, also dieselbe Schnittstelle, die auch die Club-Seite nutzt. Plätze und Öffnungszeiten liest das Skript bei jedem Lauf von der Club-Seite.
 
 **eBuSy** (DJK, TSG): Ein Block zählt als belegt, wenn eine Buchung oder Sperre ihn abdeckt. Das Raster (Plätze, Uhrzeiten) stammt aus der öffentlichen Tagesansicht, die Buchungen aus deren JSON-Abfrage (`?selectedDate=MM/DD/YYYY`). Ein Login ist nicht nötig. Bei den Außenplätzen kann das Wetter die Zahlen verzerren.
 

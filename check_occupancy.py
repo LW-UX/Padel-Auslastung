@@ -14,7 +14,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -28,6 +28,8 @@ UA = {"User-Agent": "Mozilla/5.0 (occupancy-tracker)"}
 CLUBS = [
     {"source": "playtomic", "slug": "serve-one-padel-langweid", "name": "Serve One Langweid"},
     {"source": "playtomic", "slug": "serve-one-padel", "name": "Serve One Bergheim"},
+    {"source": "playtomic", "slug": "4030-padel-club-augsburg", "name": "4030 Padel Club Augsburg",
+     "opens_on": date(2026, 11, 25)},
     # Noch nicht eroeffnet, Zeile einkommentieren sobald online buchbar:
     # {"source": "playtomic", "slug": "bima-athletics", "name": "BIMA Bobingen"},
     {"source": "ebusy", "url": "https://padel-djk-lechhausen.ebusy.de/lite-module/1", "name": "DJK Lechhausen"},
@@ -163,8 +165,11 @@ SOURCES = {"playtomic": playtomic_day, "ebusy": ebusy_day}
 
 def analyse(club, now):
     rows, cache = [], {}
+    opens_on = club.get("opens_on")
     for days_ahead in (0, DAYS_AHEAD):
         day = (now + timedelta(days=days_ahead)).date()
+        if opens_on and day < opens_on:
+            continue
         courts, blocks, status, note = SOURCES[club["source"]](club, day, cache)
         keep = [i for i, b in enumerate(blocks) if days_ahead or b >= now]  # Vergangenes zeigt Playtomic nicht mehr an
         if not keep:

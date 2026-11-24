@@ -8,6 +8,7 @@ Nur Standardbibliothek, damit es in jeder Umgebung ohne pip install laeuft.
 """
 import csv
 import json
+import os
 import re
 import sys
 import time
@@ -54,16 +55,46 @@ FIELDS = [
 WEEKDAYS_DE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 
+BLOCKED_WAITS = (30, 120)  # Sekunden vor dem 2. und 3. Versuch, wenn Playtomic mit 403/429 sperrt
+
+
+def playtomic_cookie_headers():
+    """Optionaler Browser-Cookie aus PLAYTOMIC_COOKIE (Anfragekopfzeile "Cookie" einer availability-Anfrage).
+
+    Wie in Padel-Liga (court-availability-probe/browser-cookie.ts): Erneuerungstoken sowie Analyse- und
+    Zahlungscookies werden nie mitgeschickt. PLAYTOMIC_USER_AGENT sollte der User-Agent desselben Browsers sein.
+    """
+    raw = os.environ.get("PLAYTOMIC_COOKIE", "").strip()
+    if not raw:
+        return {}
+    if re.search(r"[\r\n\0]", raw):
+        raise ValueError("PLAYTOMIC_COOKIE ungueltig")
+    skip = re.compile(r"^(?:_ga(?:_|$)|_gid$|_gat|_gcl_|__utm|_fb[pc]$|_hj|_cl[cs]k$|__stripe_|hubspotutk$|__hs)", re.I)
+    parts = []
+    for part in re.sub(r"^cookie\s*:\s*", "", raw, flags=re.I).split(";"):
+        name, sep, value = part.strip().partition("=")
+        if not sep or not re.fullmatch(r"[!#$%&'*+.^_`|~0-9A-Za-z-]+", name):
+            raise ValueError("PLAYTOMIC_COOKIE ungueltig")
+        if name != "pt_auth_refresh_token" and not skip.match(name):
+            parts.append(f"{name}={value}")
+    headers = {"Cookie": "; ".join(parts)} if parts else {}
+    agent = os.environ.get("PLAYTOMIC_USER_AGENT", "").strip()
+    if agent:
+        headers["User-Agent"] = agent
+    return headers
+
+
 def get(url, headers=None, attempts=3):
     req = urllib.request.Request(url, headers={**UA, **(headers or {})})
     for attempt in range(attempts):
         try:
             with urllib.request.urlopen(req, timeout=20) as r:
                 return r.read().decode("utf-8")
-        except (TimeoutError, urllib.error.URLError):
+        except (TimeoutError, urllib.error.URLError) as e:
             if attempt == attempts - 1:
                 raise
-            time.sleep(5)
+            blocked = isinstance(e, urllib.error.HTTPError) and e.code in (403, 429)
+            time.sleep(BLOCKED_WAITS[min(attempt, len(BLOCKED_WAITS) - 1)] if blocked else 5)
 
 
 def extract_json(text, key, opener):
@@ -85,7 +116,7 @@ def extract_json(text, key, opener):
 
 
 def club_info(slug):
-    html = get(f"https://playtomic.com/clubs/{slug}").replace('\\"', '"')
+    html = get(f"https://playtomic.com/clubs/{slug}", playtomic_cookie_headers()).replace('\\"', '"')
     tenant_id = re.search(r'"tenant":\{"tenant_id":"([0-9a-f-]{36})"', html).group(1)
     resources = extract_json(html, "resources", "[") or []
     courts = {r["resourceId"]: r["name"].strip() for r in resources if r.get("sport") == "PADEL"}
@@ -110,7 +141,7 @@ def free_intervals(tenant_id, day):
     data = json.loads(get(
         "https://playtomic.com/api/clubs/availability"
         f"?tenant_id={tenant_id}&date={day.isoformat()}&sport_id=PADEL",
-        PLAYTOMIC_AVAILABILITY_HEADERS,
+        {**PLAYTOMIC_AVAILABILITY_HEADERS, **playtomic_cookie_headers()},
     ))
     free = {}
     for entry in data:

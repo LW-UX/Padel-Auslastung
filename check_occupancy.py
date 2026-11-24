@@ -8,7 +8,6 @@ Nur Standardbibliothek, damit es in jeder Umgebung ohne pip install laeuft.
 """
 import csv
 import json
-import os
 import re
 import sys
 import time
@@ -25,7 +24,8 @@ DAYS_AHEAD = 4
 BLOCK_MIN = 30
 CSV_PATH = Path(__file__).parent / "data" / "occupancy.csv"
 UA = {"User-Agent": "Mozilla/5.0 (occupancy-tracker)"}
-PLAYTOMIC_AVAILABILITY_HEADERS = {
+# Browser-Anfrageprofil wie in Padel-Liga (request-headers.ts); nackte Serverabrufe weist Playtomic mit 403 ab.
+PLAYTOMIC_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:145.0) Gecko/20100101 Firefox/145.0",
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
@@ -56,32 +56,6 @@ WEEKDAYS_DE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 
 BLOCKED_WAITS = (30, 120)  # Sekunden vor dem 2. und 3. Versuch, wenn Playtomic mit 403/429 sperrt
-
-
-def playtomic_cookie_headers():
-    """Optionaler Browser-Cookie aus PLAYTOMIC_COOKIE (Anfragekopfzeile "Cookie" einer availability-Anfrage).
-
-    Wie in Padel-Liga (court-availability-probe/browser-cookie.ts): Erneuerungstoken sowie Analyse- und
-    Zahlungscookies werden nie mitgeschickt. PLAYTOMIC_USER_AGENT sollte der User-Agent desselben Browsers sein.
-    """
-    raw = os.environ.get("PLAYTOMIC_COOKIE", "").strip()
-    if not raw:
-        return {}
-    if re.search(r"[\r\n\0]", raw):
-        raise ValueError("PLAYTOMIC_COOKIE ungueltig")
-    skip = re.compile(r"^(?:_ga(?:_|$)|_gid$|_gat|_gcl_|__utm|_fb[pc]$|_hj|_cl[cs]k$|__stripe_|hubspotutk$|__hs)", re.I)
-    parts = []
-    for part in re.sub(r"^cookie\s*:\s*", "", raw, flags=re.I).split(";"):
-        name, sep, value = part.strip().partition("=")
-        if not sep or not re.fullmatch(r"[!#$%&'*+.^_`|~0-9A-Za-z-]+", name):
-            raise ValueError("PLAYTOMIC_COOKIE ungueltig")
-        if name != "pt_auth_refresh_token" and not skip.match(name):
-            parts.append(f"{name}={value}")
-    headers = {"Cookie": "; ".join(parts)} if parts else {}
-    agent = os.environ.get("PLAYTOMIC_USER_AGENT", "").strip()
-    if agent:
-        headers["User-Agent"] = agent
-    return headers
 
 
 def get(url, headers=None, attempts=3):
@@ -116,7 +90,7 @@ def extract_json(text, key, opener):
 
 
 def club_info(slug):
-    html = get(f"https://playtomic.com/clubs/{slug}", playtomic_cookie_headers()).replace('\\"', '"')
+    html = get(f"https://playtomic.com/clubs/{slug}", PLAYTOMIC_HEADERS).replace('\\"', '"')
     tenant_id = re.search(r'"tenant":\{"tenant_id":"([0-9a-f-]{36})"', html).group(1)
     resources = extract_json(html, "resources", "[") or []
     courts = {r["resourceId"]: r["name"].strip() for r in resources if r.get("sport") == "PADEL"}
@@ -141,7 +115,7 @@ def free_intervals(tenant_id, day):
     data = json.loads(get(
         "https://playtomic.com/api/clubs/availability"
         f"?tenant_id={tenant_id}&date={day.isoformat()}&sport_id=PADEL",
-        {**PLAYTOMIC_AVAILABILITY_HEADERS, **playtomic_cookie_headers()},
+        PLAYTOMIC_HEADERS,
     ))
     free = {}
     for entry in data:

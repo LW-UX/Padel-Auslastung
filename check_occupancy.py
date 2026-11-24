@@ -219,6 +219,16 @@ def row(now, club, day, days_ahead, court, counts, first, pattern, note):
     }
 
 
+def strip_conflict_markers(path):
+    """Entfernt Reste von Git-Merge-Konflikten (<<<<<<<, =======, >>>>>>>), die beim Rebase gleichzeitiger Laeufe entstehen koennen."""
+    with path.open(newline="") as f:
+        lines = f.readlines()
+    clean = [l for l in lines if not l.startswith(("<<<<<<<", "=======", ">>>>>>>"))]
+    if len(clean) != len(lines):
+        with path.open("w", newline="") as f:
+            f.writelines(clean)
+
+
 def main():
     now = datetime.now(TZ)
     rows, errors = [], []
@@ -231,6 +241,8 @@ def main():
     if rows:  # bei Fehlern keine leere CSV anlegen
         CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
         new = not CSV_PATH.exists()
+        if not new:
+            strip_conflict_markers(CSV_PATH)
         with CSV_PATH.open("a", newline="") as f:
             w = csv.DictWriter(f, fieldnames=FIELDS)
             if new:

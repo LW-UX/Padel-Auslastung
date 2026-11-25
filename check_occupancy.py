@@ -23,6 +23,7 @@ UTC = ZoneInfo("UTC")
 DAYS_AHEAD = 4
 BLOCK_MIN = 30
 CSV_PATH = Path(__file__).parent / "data" / "occupancy.csv"
+CLUB_CACHE_PATH = Path(__file__).parent / "data" / "playtomic_clubs.json"
 UA = {"User-Agent": "Mozilla/5.0 (occupancy-tracker)"}
 # Browser-Anfrageprofil wie in Padel-Liga (request-headers.ts); nackte Serverabrufe weist Playtomic mit 403 ab.
 PLAYTOMIC_HEADERS = {
@@ -90,12 +91,28 @@ def extract_json(text, key, opener):
 
 
 def club_info(slug):
-    html = get(f"https://playtomic.com/clubs/{slug}", PLAYTOMIC_HEADERS).replace('\\"', '"')
-    tenant_id = re.search(r'"tenant":\{"tenant_id":"([0-9a-f-]{36})"', html).group(1)
-    resources = extract_json(html, "resources", "[") or []
-    courts = {r["resourceId"]: r["name"].strip() for r in resources if r.get("sport") == "PADEL"}
-    hours = extract_json(html, "opening_hours", "{") or {}
-    return tenant_id, courts, hours
+    """Plaetze und Oeffnungszeiten von der Club-Seite; ist sie gesperrt, die zuletzt gelesenen (wie Padel-Liga)."""
+    try:
+        cached = json.loads(CLUB_CACHE_PATH.read_text())
+    except (FileNotFoundError, ValueError):
+        cached = {}
+    try:
+        html = get(f"https://playtomic.com/clubs/{slug}", PLAYTOMIC_HEADERS).replace('\\"', '"')
+        tenant_id = re.search(r'"tenant":\{"tenant_id":"([0-9a-f-]{36})"', html).group(1)
+        resources = extract_json(html, "resources", "[") or []
+        courts = {r["resourceId"]: r["name"].strip() for r in resources if r.get("sport") == "PADEL"}
+        hours = extract_json(html, "opening_hours", "{") or {}
+        if not courts or not hours:
+            raise ValueError("Club-Seite ohne Plaetze oder Oeffnungszeiten")
+    except Exception:
+        if slug not in cached:
+            raise
+        info = cached[slug]
+        return info["tenant_id"], info["courts"], info["hours"], "Club-Daten aus Zwischenspeicher"
+    info = {"tenant_id": tenant_id, "courts": courts, "hours": hours}
+    if cached.get(slug) != info:
+        CLUB_CACHE_PATH.write_text(json.dumps({**cached, slug: info}, ensure_ascii=False, indent=2) + "\n")
+    return tenant_id, courts, hours, ""
 
 
 def open_range(hours, day):
@@ -135,17 +152,17 @@ def playtomic_day(club, day, cache):
     """(courts, blocks, status) fuer einen Tag; status[cid] = Liste aus "X"/"." je Block."""
     if "info" not in cache:
         cache["info"] = club_info(club["slug"])
-    tenant_id, courts, hours = cache["info"]
+    tenant_id, courts, hours, source_note = cache["info"]
     rng = open_range(hours, day)
     if not rng:
-        return courts, [], {}, ""
+        return courts, [], {}, source_note
     midnight = datetime.combine(day, datetime.min.time(), tzinfo=TZ)
     blocks = [midnight + timedelta(minutes=m) for m in range(rng[0], rng[1], BLOCK_MIN)]
     free = free_intervals(tenant_id, day)
     status = {cid: ["." if any(a <= b < e for a, e in free.get(cid, [])) else "X" for b in blocks]
               for cid in courts}
     note = "" if free else "keine freien Online-Slots (ausgebucht oder nicht online buchbar)"
-    return courts, blocks, status, note
+    return courts, blocks, status, "; ".join(n for n in (note, source_note) if n)
 
 
 def ebusy_day(club, day, cache):
@@ -241,7 +258,8 @@ def main():
         try:
             rows += analyse(club, now)
         except Exception as e:  # ein kaputter Club soll die anderen nicht blockieren
-            errors.append(f'{club["name"]}: {e}')
+            url = getattr(e, "filename", None)  # bei HTTP-Fehlern die abgelehnte Adresse
+            errors.append(f'{club["name"]}: {e}' + (f" ({url})" if isinstance(url, str) and url.startswith("http") else ""))
 
     if rows:  # bei Fehlern keine leere CSV anlegen
         CSV_PATH.parent.mkdir(parents=True, exist_ok=True)

@@ -23,7 +23,7 @@ Die Ergebnisse werden an [data/occupancy.csv](data/occupancy.csv) angehängt, ei
 
 **Playtomic** (Serve One, 4030, BIMA): Ein Block zählt als frei, wenn ein buchbarer Slot ihn abdeckt. Kurze Lücken, die man nicht mehr buchen kann, zählen deshalb als belegt. Datenquelle ist `https://playtomic.com/api/clubs/availability`, also dieselbe Schnittstelle, die auch die Club-Seite nutzt. Plätze und Öffnungszeiten liest das Skript bei jedem Lauf von der Club-Seite.
 
-Beide Playtomic-Abrufe (Club-Seite und `availability`) gehen mit demselben Browser-Anfrageprofil raus wie in Padel-Liga (User-Agent und Fetch-Metadaten). Sperrt Playtomic trotzdem eine Anfrage (HTTP 403 oder 429), versucht das Skript es nach 30 Sekunden und nach 2 Minuten erneut.
+Beide Playtomic-Abrufe (Club-Seite und `availability`) gehen mit demselben Browser-Anfrageprofil raus wie in Padel-Liga (User-Agent und Fetch-Metadaten). Sperrt Playtomic trotzdem eine Anfrage (HTTP 403 oder 429), versucht das Skript es nach 30 Sekunden und nach 2 Minuten erneut. Ist die Club-Seite gesperrt, nimmt es Plätze und Öffnungszeiten aus `data/playtomic_clubs.json` (zuletzt erfolgreich gelesen, `note` = „Club-Daten aus Zwischenspeicher“). Fehlermeldungen nennen die abgelehnte Adresse.
 
 **eBuSy** (DJK, TSG): Ein Block zählt als belegt, wenn eine Buchung oder Sperre ihn abdeckt. Das Raster (Plätze, Uhrzeiten) stammt aus der öffentlichen Tagesansicht, die Buchungen aus deren JSON-Abfrage (`?selectedDate=MM/DD/YYYY`). Ein Login ist nicht nötig. Bei den Außenplätzen kann das Wetter die Zahlen verzerren.
 

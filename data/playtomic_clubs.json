@@ -1,0 +1,119 @@
+{
+  "serve-one-padel-langweid": {
+    "tenant_id": "c8c78f4e-c659-48bc-aedf-598aeed1e473",
+    "courts": {
+      "7bd38b29-a13d-4258-825c-2dbd1ae7cfab": "Padel 1 Doppel",
+      "594d86b7-c2b5-4bfa-966f-5b4bb5b668b2": "Padel 2 Doppel",
+      "af7247d3-e14e-4982-8aa0-cc79ddacca76": "Padel 3 Einzel"
+    },
+    "hours": {
+      "SUNDAY": {
+        "opening_time": "00:00",
+        "closing_time": "00:00"
+      },
+      "TUESDAY": {
+        "opening_time": "05:00",
+        "closing_time": "00:00"
+      },
+      "MONDAY": {
+        "opening_time": "05:00",
+        "closing_time": "00:00"
+      },
+      "FRIDAY": {
+        "opening_time": "05:00",
+        "closing_time": "00:00"
+      },
+      "SATURDAY": {
+        "opening_time": "00:00",
+        "closing_time": "00:00"
+      },
+      "WEDNESDAY": {
+        "opening_time": "05:00",
+        "closing_time": "00:00"
+      },
+      "THURSDAY": {
+        "opening_time": "05:00",
+        "closing_time": "00:00"
+      }
+    }
+  },
+  "serve-one-padel": {
+    "tenant_id": "946c27be-03f9-41a5-8002-d9b0f075cdad",
+    "courts": {
+      "634e9f4e-4f87-4801-8f77-8672122baa6d": "Single Court",
+      "e0b5593b-1fd7-413b-ab3e-c4f38d2069c2": "Doppel Court"
+    },
+    "hours": {
+      "SATURDAY": {
+        "opening_time": "07:00",
+        "closing_time": "22:00"
+      },
+      "THURSDAY": {
+        "opening_time": "07:00",
+        "closing_time": "22:00"
+      },
+      "MONDAY": {
+        "opening_time": "07:00",
+        "closing_time": "22:00"
+      },
+      "FRIDAY": {
+        "opening_time": "07:00",
+        "closing_time": "22:00"
+      },
+      "TUESDAY": {
+        "opening_time": "07:00",
+        "closing_time": "22:00"
+      },
+      "WEDNESDAY": {
+        "opening_time": "07:00",
+        "closing_time": "22:00"
+      },
+      "SUNDAY": {
+        "opening_time": "07:00",
+        "closing_time": "22:00"
+      }
+    }
+  },
+  "4030-padel-club-augsburg": {
+    "tenant_id": "3d5d9cf0-6b9b-4873-a2a6-78a113aba2bf",
+    "courts": {
+      "e0a1a66a-3783-4bef-9cb2-20e9c6efa262": "Padel 1 | Double",
+      "fc53d345-79bd-40bf-8aee-ca3c39379428": "Padel 2 | Double",
+      "fb41756f-6f87-44fc-8675-2d8b87ef44db": "Padel 3 | Double",
+      "b0d45a6e-7fd4-40a3-80df-e3882dca7a38": "Padel 4 | Double",
+      "dd7f6b75-bdd2-4f65-830e-9055d917ba2e": "Padel 5 | Double",
+      "8c728de6-3e7f-4d86-a3f3-7e299e4da302": "Padel 6 | Single",
+      "520888e8-0549-4124-bdd5-7ef8800a6cfe": "Padel 7 | Single"
+    },
+    "hours": {
+      "SATURDAY": {
+        "opening_time": "09:00",
+        "closing_time": "21:30"
+      },
+      "MONDAY": {
+        "opening_time": "08:00",
+        "closing_time": "22:30"
+      },
+      "TUESDAY": {
+        "opening_time": "08:00",
+        "closing_time": "22:30"
+      },
+      "SUNDAY": {
+        "opening_time": "09:00",
+        "closing_time": "21:30"
+      },
+      "WEDNESDAY": {
+        "opening_time": "08:00",
+        "closing_time": "22:30"
+      },
+      "THURSDAY": {
+        "opening_time": "08:00",
+        "closing_time": "22:30"
+      },
+      "FRIDAY": {
+        "opening_time": "08:00",
+        "closing_time": "22:30"
+      }
+    }
+  }
+}

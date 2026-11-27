@@ -2637,6 +2637,36 @@ run_at,club,date,weekday,days_ahead,court,total_blocks,booked_blocks,occupancy_p
 2026-11-25 15:20,TSG Lechhausen,2026-11-29,So,4,Court 1,28,0,0.0,0.0,0.0,0.0,08:00,............................,
 2026-11-25 15:20,TSG Lechhausen,2026-11-29,So,4,Court 2,28,2,7.1,25.0,0.0,0.0,08:00,.....XX.....................,
 2026-11-25 15:20,TSG Lechhausen,2026-11-29,So,4,Court 3,28,0,0.0,0.0,0.0,0.0,08:00,............................,
+2026-11-26 06:07,Serve One Langweid,2026-11-26,Do,0,ALLE,87,53,60.9,33.3,46.7,81.0,09:30,,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Langweid,2026-11-26,Do,0,Padel 1 Doppel,29,17,58.6,0.0,30.0,100.0,09:30,............XXXXXXXXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Langweid,2026-11-26,Do,0,Padel 2 Doppel,29,19,65.5,40.0,50.0,85.7,09:30,...XX.....XXXXXXXXXXXXXXXXX..,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Langweid,2026-11-26,Do,0,Padel 3 Einzel,29,17,58.6,60.0,60.0,57.1,09:30,X..XX....XXXXXXXXXXXXXX......,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Langweid,2026-11-30,Mo,4,ALLE,114,32,28.1,0.0,16.7,64.3,05:00,,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Langweid,2026-11-30,Mo,4,Padel 1 Doppel,38,11,28.9,0.0,0.0,78.6,05:00,........................XXXXXXXXXXX...,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Langweid,2026-11-30,Mo,4,Padel 2 Doppel,38,12,31.6,0.0,10.0,78.6,05:00,.......................XXXXXXXXXXXX...,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Langweid,2026-11-30,Mo,4,Padel 3 Einzel,38,9,23.7,0.0,40.0,35.7,05:00,..............XX..XX......XXXXX.......,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Bergheim,2026-11-26,Do,0,ALLE,50,28,56.0,30.0,25.0,100.0,09:30,,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Bergheim,2026-11-26,Do,0,Single Court,25,16,64.0,60.0,30.0,100.0,09:30,..XXXXX.......XXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Bergheim,2026-11-26,Do,0,Doppel Court,25,12,48.0,0.0,20.0,100.0,09:30,.............XXXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Bergheim,2026-11-30,Mo,4,ALLE,60,14,23.3,0.0,0.0,70.0,07:00,,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Bergheim,2026-11-30,Mo,4,Single Court,30,4,13.3,0.0,0.0,40.0,07:00,......................XXXX....,übernommen aus Lauf 09:20
+2026-11-26 06:07,Serve One Bergheim,2026-11-30,Mo,4,Doppel Court,30,10,33.3,0.0,0.0,100.0,07:00,....................XXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-26,Do,0,ALLE,182,117,64.3,22.9,51.4,94.8,09:30,,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-26,Do,0,Padel 1 | Double,26,13,50.0,0.0,20.0,100.0,09:30,.............XXXXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-26,Do,0,Padel 2 | Double,26,20,76.9,80.0,50.0,100.0,09:30,XXXX......XXXXXXXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-26,Do,0,Padel 3 | Double,26,18,69.2,20.0,60.0,100.0,09:30,....XX....XXXXXXXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-26,Do,0,Padel 4 | Double,26,15,57.7,0.0,60.0,81.8,09:30,.....XXX....XXXXXXXXXXXX..,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-26,Do,0,Padel 5 | Double,26,17,65.4,0.0,60.0,100.0,09:30,.....XXX....XXXXXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-26,Do,0,Padel 6 | Single,26,15,57.7,40.0,40.0,81.8,09:30,...XXXX......XXXXXXXXXXX..,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-26,Do,0,Padel 7 | Single,26,19,73.1,20.0,70.0,100.0,09:30,....XXXXX...XXXXXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-30,Mo,4,ALLE,203,73,36.0,14.3,8.6,76.6,08:00,,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-30,Mo,4,Padel 1 | Double,29,10,34.5,0.0,0.0,90.9,08:00,...................XXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-30,Mo,4,Padel 2 | Double,29,12,41.4,0.0,10.0,100.0,08:00,.................XXXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-30,Mo,4,Padel 3 | Double,29,11,37.9,0.0,0.0,100.0,08:00,..................XXXXXXXXXXX,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-30,Mo,4,Padel 4 | Double,29,22,75.9,100.0,50.0,81.8,08:00,XXXXXXXXXXXX.....XXXXXXXXXX..,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-30,Mo,4,Padel 5 | Double,29,9,31.0,0.0,0.0,81.8,08:00,..................XXXXXXXXX..,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-30,Mo,4,Padel 6 | Single,29,5,17.2,0.0,0.0,45.5,08:00,..................XX...XXX...,übernommen aus Lauf 09:20
+2026-11-26 06:07,4030 Padel Club Augsburg,2026-11-30,Mo,4,Padel 7 | Single,29,4,13.8,0.0,0.0,36.4,08:00,...................XXXX......,übernommen aus Lauf 09:20
 2026-11-26 06:07,DJK Lechhausen,2026-11-26,Do,0,ALLE,64,0,0.0,0.0,0.0,0.0,07:00,,
 2026-11-26 06:07,DJK Lechhausen,2026-11-26,Do,0,Padel-Court 1,32,0,0.0,0.0,0.0,0.0,07:00,................................,
 2026-11-26 06:07,DJK Lechhausen,2026-11-26,Do,0,Padel-Court 2,32,0,0.0,0.0,0.0,0.0,07:00,................................,

@@ -56,20 +56,16 @@ FIELDS = [
 WEEKDAYS_DE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 
-BLOCKED_WAITS = (30, 120)  # Sekunden vor dem 2. und 3. Versuch, wenn Playtomic mit 403/429 sperrt
-
-
 def get(url, headers=None, attempts=3):
     req = urllib.request.Request(url, headers={**UA, **(headers or {})})
     for attempt in range(attempts):
         try:
             with urllib.request.urlopen(req, timeout=20) as r:
                 return r.read().decode("utf-8")
-        except (TimeoutError, urllib.error.URLError) as e:
+        except (TimeoutError, urllib.error.URLError):
             if attempt == attempts - 1:
                 raise
-            blocked = isinstance(e, urllib.error.HTTPError) and e.code in (403, 429)
-            time.sleep(BLOCKED_WAITS[min(attempt, len(BLOCKED_WAITS) - 1)] if blocked else 5)
+            time.sleep(5)  # kurz halten: lange Sperren ueberbrueckt Warten nicht, und die Routine bricht lange Laeufe ab
 
 
 def extract_json(text, key, opener):

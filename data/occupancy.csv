@@ -2989,6 +2989,80 @@ run_at,club,date,weekday,days_ahead,court,total_blocks,booked_blocks,occupancy_p
 2026-11-27 15:07,TSG Lechhausen,2026-12-01,Di,4,Court 1,28,0,0.0,0.0,0.0,0.0,08:00,............................,nachgeholt um 15:22
 2026-11-27 15:07,TSG Lechhausen,2026-12-01,Di,4,Court 2,28,0,0.0,0.0,0.0,0.0,08:00,............................,nachgeholt um 15:22
 2026-11-27 15:07,TSG Lechhausen,2026-12-01,Di,4,Court 3,28,0,0.0,0.0,0.0,0.0,08:00,............................,nachgeholt um 15:22
+2026-11-28 06:07,Serve One Langweid,2026-11-28,Sa,0,ALLE,39,39,100.0,,,100.0,17:30,,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 06:07,Serve One Langweid,2026-11-28,Sa,0,Padel 1 Doppel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 06:07,Serve One Langweid,2026-11-28,Sa,0,Padel 2 Doppel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 06:07,Serve One Langweid,2026-11-28,Sa,0,Padel 3 Einzel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 06:07,Serve One Langweid,2026-12-02,Mi,4,ALLE,114,34,29.8,0.0,16.7,69.0,05:00,,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Langweid,2026-12-02,Mi,4,Padel 1 Doppel,38,12,31.6,0.0,20.0,71.4,05:00,......................XXXXXXXXXXXX....,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Langweid,2026-12-02,Mi,4,Padel 2 Doppel,38,11,28.9,0.0,10.0,71.4,05:00,.......................XXXXXXXXXXX....,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Langweid,2026-12-02,Mi,4,Padel 3 Einzel,38,11,28.9,0.0,20.0,64.3,05:00,..................XX....XXXXXXXXX.....,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Bergheim,2026-11-28,Sa,0,ALLE,18,16,88.9,,,88.9,17:30,,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Bergheim,2026-11-28,Sa,0,Single Court,9,7,77.8,,,77.8,17:30,XXXXXXX..,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Bergheim,2026-11-28,Sa,0,Doppel Court,9,9,100.0,,,100.0,17:30,XXXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Bergheim,2026-12-02,Mi,4,ALLE,60,25,41.7,0.0,35.0,90.0,07:00,,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Bergheim,2026-12-02,Mi,4,Single Court,30,13,43.3,0.0,50.0,80.0,07:00,...........XXX....XXXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 06:07,Serve One Bergheim,2026-12-02,Mi,4,Doppel Court,30,12,40.0,0.0,20.0,100.0,07:00,..................XXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,ALLE,56,48,85.7,,,85.7,17:30,,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 1 | Double,8,4,50.0,,,50.0,17:30,XXXX....,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 2 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 3 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 4 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 5 | Double,8,6,75.0,,,75.0,17:30,XXXXXX..,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 6 | Single,8,6,75.0,,,75.0,17:30,XXXXXX..,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 7 | Single,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,ALLE,203,95,46.8,23.2,15.7,92.2,08:00,,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 1 | Double,29,16,55.2,37.5,20.0,100.0,08:00,..XXX...........XXXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 2 | Double,29,16,55.2,37.5,20.0,100.0,08:00,..XXX.........XX..XXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 3 | Double,29,16,55.2,37.5,40.0,81.8,08:00,..XXX.........XXXXXXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 4 | Double,29,17,58.6,50.0,20.0,100.0,08:00,..XXXX..........XXXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 5 | Double,29,12,41.4,0.0,10.0,100.0,08:00,.................XXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 6 | Single,29,9,31.0,0.0,0.0,81.8,08:00,..................XXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 06:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 7 | Single,29,9,31.0,0.0,0.0,81.8,08:00,..................XXXXXX..XXX,nachgeholt um 17:05
+2026-11-28 06:07,DJK Lechhausen,2026-11-28,Sa,0,ALLE,64,0,0.0,0.0,0.0,0.0,07:00,,nachgeholt um 17:05
+2026-11-28 06:07,DJK Lechhausen,2026-11-28,Sa,0,Padel-Court 1,32,0,0.0,0.0,0.0,0.0,07:00,................................,nachgeholt um 17:05
+2026-11-28 06:07,DJK Lechhausen,2026-11-28,Sa,0,Padel-Court 2,32,0,0.0,0.0,0.0,0.0,07:00,................................,nachgeholt um 17:05
+2026-11-28 06:07,DJK Lechhausen,2026-12-02,Mi,4,ALLE,64,0,0.0,0.0,0.0,0.0,07:00,,nachgeholt um 17:05
+2026-11-28 06:07,DJK Lechhausen,2026-12-02,Mi,4,Padel-Court 1,32,0,0.0,0.0,0.0,0.0,07:00,................................,nachgeholt um 17:05
+2026-11-28 06:07,DJK Lechhausen,2026-12-02,Mi,4,Padel-Court 2,32,0,0.0,0.0,0.0,0.0,07:00,................................,nachgeholt um 17:05
+2026-11-28 06:07,TSG Lechhausen,2026-11-28,Sa,0,ALLE,84,2,2.4,8.3,0.0,0.0,08:00,,nachgeholt um 17:05
+2026-11-28 06:07,TSG Lechhausen,2026-11-28,Sa,0,Court 1,28,2,7.1,25.0,0.0,0.0,08:00,....XX......................,nachgeholt um 17:05
+2026-11-28 06:07,TSG Lechhausen,2026-11-28,Sa,0,Court 2,28,0,0.0,0.0,0.0,0.0,08:00,............................,nachgeholt um 17:05
+2026-11-28 06:07,TSG Lechhausen,2026-11-28,Sa,0,Court 3,28,0,0.0,0.0,0.0,0.0,08:00,............................,nachgeholt um 17:05
+2026-11-28 06:07,TSG Lechhausen,2026-12-02,Mi,4,ALLE,84,0,0.0,0.0,0.0,0.0,08:00,,nachgeholt um 17:05
+2026-11-28 06:07,TSG Lechhausen,2026-12-02,Mi,4,Court 1,28,0,0.0,0.0,0.0,0.0,08:00,............................,nachgeholt um 17:05
+2026-11-28 06:07,TSG Lechhausen,2026-12-02,Mi,4,Court 2,28,0,0.0,0.0,0.0,0.0,08:00,............................,nachgeholt um 17:05
+2026-11-28 06:07,TSG Lechhausen,2026-12-02,Mi,4,Court 3,28,0,0.0,0.0,0.0,0.0,08:00,............................,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Langweid,2026-11-28,Sa,0,ALLE,39,39,100.0,,,100.0,17:30,,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 10:07,Serve One Langweid,2026-11-28,Sa,0,Padel 1 Doppel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 10:07,Serve One Langweid,2026-11-28,Sa,0,Padel 2 Doppel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 10:07,Serve One Langweid,2026-11-28,Sa,0,Padel 3 Einzel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 10:07,Serve One Langweid,2026-12-02,Mi,4,ALLE,114,34,29.8,0.0,16.7,69.0,05:00,,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Langweid,2026-12-02,Mi,4,Padel 1 Doppel,38,12,31.6,0.0,20.0,71.4,05:00,......................XXXXXXXXXXXX....,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Langweid,2026-12-02,Mi,4,Padel 2 Doppel,38,11,28.9,0.0,10.0,71.4,05:00,.......................XXXXXXXXXXX....,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Langweid,2026-12-02,Mi,4,Padel 3 Einzel,38,11,28.9,0.0,20.0,64.3,05:00,..................XX....XXXXXXXXX.....,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Bergheim,2026-11-28,Sa,0,ALLE,18,16,88.9,,,88.9,17:30,,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Bergheim,2026-11-28,Sa,0,Single Court,9,7,77.8,,,77.8,17:30,XXXXXXX..,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Bergheim,2026-11-28,Sa,0,Doppel Court,9,9,100.0,,,100.0,17:30,XXXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Bergheim,2026-12-02,Mi,4,ALLE,60,25,41.7,0.0,35.0,90.0,07:00,,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Bergheim,2026-12-02,Mi,4,Single Court,30,13,43.3,0.0,50.0,80.0,07:00,...........XXX....XXXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 10:07,Serve One Bergheim,2026-12-02,Mi,4,Doppel Court,30,12,40.0,0.0,20.0,100.0,07:00,..................XXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,ALLE,56,48,85.7,,,85.7,17:30,,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 1 | Double,8,4,50.0,,,50.0,17:30,XXXX....,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 2 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 3 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 4 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 5 | Double,8,6,75.0,,,75.0,17:30,XXXXXX..,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 6 | Single,8,6,75.0,,,75.0,17:30,XXXXXX..,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 7 | Single,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,ALLE,203,95,46.8,23.2,15.7,92.2,08:00,,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 1 | Double,29,16,55.2,37.5,20.0,100.0,08:00,..XXX...........XXXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 2 | Double,29,16,55.2,37.5,20.0,100.0,08:00,..XXX.........XX..XXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 3 | Double,29,16,55.2,37.5,40.0,81.8,08:00,..XXX.........XXXXXXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 4 | Double,29,17,58.6,50.0,20.0,100.0,08:00,..XXXX..........XXXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 5 | Double,29,12,41.4,0.0,10.0,100.0,08:00,.................XXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 6 | Single,29,9,31.0,0.0,0.0,81.8,08:00,..................XXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 10:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 7 | Single,29,9,31.0,0.0,0.0,81.8,08:00,..................XXXXXX..XXX,nachgeholt um 17:05
 2026-11-28 10:07,DJK Lechhausen,2026-11-28,Sa,0,ALLE,50,0,0.0,0.0,0.0,0.0,10:30,,
 2026-11-28 10:07,DJK Lechhausen,2026-11-28,Sa,0,Padel-Court 1,25,0,0.0,0.0,0.0,0.0,10:30,.........................,
 2026-11-28 10:07,DJK Lechhausen,2026-11-28,Sa,0,Padel-Court 2,25,0,0.0,0.0,0.0,0.0,10:30,.........................,
@@ -3003,6 +3077,36 @@ run_at,club,date,weekday,days_ahead,court,total_blocks,booked_blocks,occupancy_p
 2026-11-28 10:07,TSG Lechhausen,2026-12-02,Mi,4,Court 1,28,0,0.0,0.0,0.0,0.0,08:00,............................,
 2026-11-28 10:07,TSG Lechhausen,2026-12-02,Mi,4,Court 2,28,0,0.0,0.0,0.0,0.0,08:00,............................,
 2026-11-28 10:07,TSG Lechhausen,2026-12-02,Mi,4,Court 3,28,0,0.0,0.0,0.0,0.0,08:00,............................,
+2026-11-28 15:07,Serve One Langweid,2026-11-28,Sa,0,ALLE,39,39,100.0,,,100.0,17:30,,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 15:07,Serve One Langweid,2026-11-28,Sa,0,Padel 1 Doppel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 15:07,Serve One Langweid,2026-11-28,Sa,0,Padel 2 Doppel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 15:07,Serve One Langweid,2026-11-28,Sa,0,Padel 3 Einzel,13,13,100.0,,,100.0,17:30,XXXXXXXXXXXXX,keine freien Online-Slots (ausgebucht oder nicht online buchbar); nachgeholt um 17:05
+2026-11-28 15:07,Serve One Langweid,2026-12-02,Mi,4,ALLE,114,34,29.8,0.0,16.7,69.0,05:00,,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Langweid,2026-12-02,Mi,4,Padel 1 Doppel,38,12,31.6,0.0,20.0,71.4,05:00,......................XXXXXXXXXXXX....,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Langweid,2026-12-02,Mi,4,Padel 2 Doppel,38,11,28.9,0.0,10.0,71.4,05:00,.......................XXXXXXXXXXX....,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Langweid,2026-12-02,Mi,4,Padel 3 Einzel,38,11,28.9,0.0,20.0,64.3,05:00,..................XX....XXXXXXXXX.....,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Bergheim,2026-11-28,Sa,0,ALLE,18,16,88.9,,,88.9,17:30,,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Bergheim,2026-11-28,Sa,0,Single Court,9,7,77.8,,,77.8,17:30,XXXXXXX..,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Bergheim,2026-11-28,Sa,0,Doppel Court,9,9,100.0,,,100.0,17:30,XXXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Bergheim,2026-12-02,Mi,4,ALLE,60,25,41.7,0.0,35.0,90.0,07:00,,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Bergheim,2026-12-02,Mi,4,Single Court,30,13,43.3,0.0,50.0,80.0,07:00,...........XXX....XXXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 15:07,Serve One Bergheim,2026-12-02,Mi,4,Doppel Court,30,12,40.0,0.0,20.0,100.0,07:00,..................XXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,ALLE,56,48,85.7,,,85.7,17:30,,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 1 | Double,8,4,50.0,,,50.0,17:30,XXXX....,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 2 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 3 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 4 | Double,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 5 | Double,8,6,75.0,,,75.0,17:30,XXXXXX..,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 6 | Single,8,6,75.0,,,75.0,17:30,XXXXXX..,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-11-28,Sa,0,Padel 7 | Single,8,8,100.0,,,100.0,17:30,XXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,ALLE,203,95,46.8,23.2,15.7,92.2,08:00,,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 1 | Double,29,16,55.2,37.5,20.0,100.0,08:00,..XXX...........XXXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 2 | Double,29,16,55.2,37.5,20.0,100.0,08:00,..XXX.........XX..XXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 3 | Double,29,16,55.2,37.5,40.0,81.8,08:00,..XXX.........XXXXXXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 4 | Double,29,17,58.6,50.0,20.0,100.0,08:00,..XXXX..........XXXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 5 | Double,29,12,41.4,0.0,10.0,100.0,08:00,.................XXXXXXXXXXXX,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 6 | Single,29,9,31.0,0.0,0.0,81.8,08:00,..................XXXXXXXXX..,nachgeholt um 17:05
+2026-11-28 15:07,4030 Padel Club Augsburg,2026-12-02,Mi,4,Padel 7 | Single,29,9,31.0,0.0,0.0,81.8,08:00,..................XXXXXX..XXX,nachgeholt um 17:05
 2026-11-28 15:07,DJK Lechhausen,2026-11-28,Sa,0,ALLE,30,0,0.0,,0.0,0.0,15:30,,
 2026-11-28 15:07,DJK Lechhausen,2026-11-28,Sa,0,Padel-Court 1,15,0,0.0,,0.0,0.0,15:30,...............,
 2026-11-28 15:07,DJK Lechhausen,2026-11-28,Sa,0,Padel-Court 2,15,0,0.0,,0.0,0.0,15:30,...............,
